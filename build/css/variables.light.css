@@ -53,6 +53,10 @@
   --font-size-2xl: 24px;
   --font-size-3xl: 30px;
   --font-size-4xl: 36px;
+  --icon-size-sm: 16px;
+  --icon-size-md: 20px;
+  --icon-size-lg: 24px;
+  --icon-size-xl: 32px;
   --background-primary: var(--color-neutral-0);
   --background-secondary: var(--color-neutral-50);
   --background-brand: var(--color-blue-600);

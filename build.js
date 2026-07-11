@@ -14,6 +14,7 @@ import { readFileSync } from 'node:fs';
 //     dark values to override the light ones).
 
 const primitives = JSON.parse(readFileSync('tokens/primitives.json', 'utf8'));
+const icon = JSON.parse(readFileSync('tokens/icon.json', 'utf8'));
 const semantic = JSON.parse(readFileSync('tokens/semantic.json', 'utf8'));
 
 // The plugin tags every token with prefix: "primitives" | "semantic".
@@ -35,7 +36,7 @@ StyleDictionary.registerTransformGroup({
 
 // ---- LIGHT: primitives + light semantics -> :root, plus TS types ----
 const light = new StyleDictionary({
-  tokens: { ...primitives, ...semantic.light },
+  tokens: { ...primitives, ...icon, ...semantic.light },
   platforms: {
     css: {
       transformGroup: 'css-px',
@@ -64,7 +65,7 @@ const light = new StyleDictionary({
 // filtered out of the output. outputReferences is forced on so each override
 // is emitted as var(--color-*), resolving against the primitives in :root.
 const dark = new StyleDictionary({
-  tokens: { ...primitives, ...semantic.dark },
+  tokens: { ...primitives, ...icon, ...semantic.dark },
   platforms: {
     css: {
       transformGroup: 'css-px',

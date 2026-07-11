@@ -1,0 +1,26 @@
+{
+  "icon": {
+    "size": {
+      "sm": {
+        "value": 16,
+        "type": "number",
+        "prefix": "icon"
+      },
+      "md": {
+        "value": 20,
+        "type": "number",
+        "prefix": "icon"
+      },
+      "lg": {
+        "value": 24,
+        "type": "number",
+        "prefix": "icon"
+      },
+      "xl": {
+        "value": 32,
+        "type": "number",
+        "prefix": "icon"
+      }
+    }
+  }
+}
