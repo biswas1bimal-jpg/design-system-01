@@ -19,12 +19,26 @@ const semantic = JSON.parse(readFileSync('tokens/semantic.json', 'utf8'));
 // The plugin tags every token with prefix: "primitives" | "semantic".
 const isSemantic = (token) => token.prefix === 'semantic';
 
+// The plugin marks sizes/spacing/radii/font-sizes as type "number", so they
+// export unitless (16, not 16px) — invalid for `padding: var(--space-4)`.
+// Append px in CSS only. The TS map keeps raw numbers (React adds px itself).
+StyleDictionary.registerTransform({
+  name: 'dimension/px',
+  type: 'value',
+  filter: (token) => token.type === 'number',
+  transform: (token) => `${token.value}px`
+});
+StyleDictionary.registerTransformGroup({
+  name: 'css-px',
+  transforms: [...StyleDictionary.hooks.transformGroups.css, 'dimension/px']
+});
+
 // ---- LIGHT: primitives + light semantics -> :root, plus TS types ----
 const light = new StyleDictionary({
   tokens: { ...primitives, ...semantic.light },
   platforms: {
     css: {
-      transformGroup: 'css',
+      transformGroup: 'css-px',
       buildPath: 'build/css/',
       files: [
         {
@@ -53,7 +67,7 @@ const dark = new StyleDictionary({
   tokens: { ...primitives, ...semantic.dark },
   platforms: {
     css: {
-      transformGroup: 'css',
+      transformGroup: 'css-px',
       buildPath: 'build/css/',
       files: [
         {
