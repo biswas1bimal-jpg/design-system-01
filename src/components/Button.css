@@ -1,13 +1,12 @@
-/* Styling uses ONLY semantic tokens, so light/dark come for free. */
+/* Styling uses ONLY tokens, so light/dark come for free. Sizing comes from the
+   space / font-size / icon-size / radius tokens; color from semantic tokens. */
 .ds-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
   border: 1px solid transparent;
   border-radius: var(--radius-md);
-  font-size: var(--font-size-md);
   font-weight: 500;
   line-height: 1;
   cursor: pointer;
@@ -19,11 +18,58 @@
   cursor: not-allowed;
 }
 
+/* Stretch to the parent's width — the mobile / stacked-layout case. */
+.ds-button--full {
+  width: 100%;
+}
+
+/* ---- Sizes (padding + type + gap from tokens) ---- */
+.ds-button--sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  gap: var(--space-2);
+}
+.ds-button--md {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-md);
+  gap: var(--space-2);
+}
+.ds-button--lg {
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--font-size-lg);
+  gap: var(--space-3);
+}
+
+/* ---- Icon slots (sized per button size from the icon-size tokens) ---- */
+.ds-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ds-button__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ds-button--sm .ds-button__icon {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+}
+.ds-button--md .ds-button__icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+.ds-button--lg .ds-button__icon {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+}
+
+/* ---- Variants (color from semantic tokens only) ---- */
 .ds-button--primary {
   background-color: var(--interactive-primary);
   color: var(--text-on-brand);
 }
-
 .ds-button--primary:hover:not(:disabled) {
   background-color: var(--interactive-hover);
 }
@@ -33,7 +79,14 @@
   color: var(--text-primary);
   border-color: var(--border-default);
 }
-
 .ds-button--secondary:hover:not(:disabled) {
   background-color: var(--background-primary);
+}
+
+.ds-button--ghost {
+  background-color: transparent;
+  color: var(--text-primary);
+}
+.ds-button--ghost:hover:not(:disabled) {
+  background-color: var(--background-secondary);
 }

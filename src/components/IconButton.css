@@ -1,0 +1,77 @@
+/* Square, icon-only button. Token-only styling → light/dark for free. */
+.ds-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.ds-icon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- Sizes: equal padding keeps it square around the icon ---- */
+.ds-icon-button--sm {
+  padding: var(--space-2);
+}
+.ds-icon-button--md {
+  padding: var(--space-3);
+}
+.ds-icon-button--lg {
+  padding: var(--space-4);
+}
+
+/* ---- Icon (sized per button size from the icon-size tokens) ---- */
+.ds-icon-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ds-icon-button__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ds-icon-button--sm .ds-icon-button__icon {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+}
+.ds-icon-button--md .ds-icon-button__icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+.ds-icon-button--lg .ds-icon-button__icon {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+}
+
+/* ---- Variants (color from semantic tokens only) ---- */
+.ds-icon-button--primary {
+  background-color: var(--interactive-primary);
+  color: var(--text-on-brand);
+}
+.ds-icon-button--primary:hover:not(:disabled) {
+  background-color: var(--interactive-hover);
+}
+
+.ds-icon-button--secondary {
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-default);
+}
+.ds-icon-button--secondary:hover:not(:disabled) {
+  background-color: var(--background-primary);
+}
+
+.ds-icon-button--ghost {
+  background-color: transparent;
+  color: var(--text-primary);
+}
+.ds-icon-button--ghost:hover:not(:disabled) {
+  background-color: var(--background-secondary);
+}
