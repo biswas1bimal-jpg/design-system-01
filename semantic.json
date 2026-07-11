@@ -1,0 +1,112 @@
+{
+  "light": {
+    "background": {
+      "primary": {
+        "value": "{color.neutral.0}",
+        "type": "color",
+        "prefix": "semantic"
+      },
+      "secondary": {
+        "value": "{color.neutral.50}",
+        "type": "color",
+        "prefix": "semantic"
+      },
+      "brand": {
+        "value": "{color.blue.600}",
+        "type": "color",
+        "prefix": "semantic"
+      }
+    },
+    "text": {
+      "primary": {
+        "value": "{color.neutral.900}",
+        "type": "color",
+        "prefix": "semantic"
+      },
+      "secondary": {
+        "value": "{color.neutral.500}",
+        "type": "color",
+        "prefix": "semantic"
+      },
+      "on-brand": {
+        "value": "{color.neutral.0}",
+        "type": "color",
+        "prefix": "semantic"
+      }
+    },
+    "border": {
+      "default": {
+        "value": "{color.neutral.200}",
+        "type": "color",
+        "prefix": "semantic"
+      }
+    },
+    "interactive": {
+      "primary": {
+        "value": "{color.blue.600}",
+        "type": "color",
+        "prefix": "semantic"
+      },
+      "hover": {
+        "value": "{color.blue.700}",
+        "type": "color",
+        "prefix": "semantic"
+      }
+    }
+  },
+  "dark": {
+    "background": {
+      "primary": {
+        "value": "{color.neutral.900}",
+        "type": "color",
+        "prefix": "semantic"
+      },
+      "secondary": {
+        "value": "{color.neutral.800}",
+        "type": "color",
+        "prefix": "semantic"
+      },
+      "brand": {
+        "value": "{color.blue.500}",
+        "type": "color",
+        "prefix": "semantic"
+      }
+    },
+    "text": {
+      "primary": {
+        "value": "{color.neutral.50}",
+        "type": "color",
+        "prefix": "semantic"
+      },
+      "secondary": {
+        "value": "{color.neutral.400}",
+        "type": "color",
+        "prefix": "semantic"
+      },
+      "on-brand": {
+        "value": "{color.neutral.0}",
+        "type": "color",
+        "prefix": "semantic"
+      }
+    },
+    "border": {
+      "default": {
+        "value": "{color.neutral.700}",
+        "type": "color",
+        "prefix": "semantic"
+      }
+    },
+    "interactive": {
+      "primary": {
+        "value": "{color.blue.500}",
+        "type": "color",
+        "prefix": "semantic"
+      },
+      "hover": {
+        "value": "{color.blue.400}",
+        "type": "color",
+        "prefix": "semantic"
+      }
+    }
+  }
+}
