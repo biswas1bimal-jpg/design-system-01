@@ -1,0 +1,65 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root {
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+  --color-neutral-1000: #000000;
+  --color-blue-50: #eff6ff;
+  --color-blue-100: #dbeafe;
+  --color-blue-200: #bfdbfe;
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+  --color-blue-800: #1e40af;
+  --color-blue-900: #1e3a8a;
+  --color-red-500: #ef4444;
+  --color-green-500: #22c55e;
+  --color-amber-500: #f59e0b;
+  --space-0: 0;
+  --space-1: 4;
+  --space-2: 8;
+  --space-3: 12;
+  --space-4: 16;
+  --space-5: 20;
+  --space-6: 24;
+  --space-8: 32;
+  --space-10: 40;
+  --space-12: 48;
+  --space-16: 64;
+  --radius-none: 0;
+  --radius-sm: 4;
+  --radius-md: 8;
+  --radius-lg: 12;
+  --radius-xl: 16;
+  --radius-full: 9999;
+  --font-size-xs: 12;
+  --font-size-sm: 14;
+  --font-size-md: 16;
+  --font-size-lg: 18;
+  --font-size-xl: 20;
+  --font-size-2xl: 24;
+  --font-size-3xl: 30;
+  --font-size-4xl: 36;
+  --background-primary: var(--color-neutral-0);
+  --background-secondary: var(--color-neutral-50);
+  --background-brand: var(--color-blue-600);
+  --text-primary: var(--color-neutral-900);
+  --text-secondary: var(--color-neutral-500);
+  --text-on-brand: var(--color-neutral-0);
+  --border-default: var(--color-neutral-200);
+  --interactive-primary: var(--color-blue-600);
+  --interactive-hover: var(--color-blue-700);
+}
