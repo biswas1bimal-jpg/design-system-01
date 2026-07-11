@@ -1,0 +1,52 @@
+name: Build tokens
+
+# Keeps build/ current automatically: edit tokens/ in the browser, merge, and
+# CI regenerates the CSS + TS. On PRs it just runs the build to catch a broken
+# build.js or malformed tokens before merge (no commit, no staleness gate — so
+# a browser-only edit is never blocked).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tokens/**'
+      - 'build.js'
+      - 'package.json'
+  pull_request:
+    paths:
+      - 'tokens/**'
+      - 'build.js'
+      - 'package.json'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm install
+
+      - run: npm run build
+
+      # On main only: commit the regenerated output so build/ stays current.
+      # The paths filter excludes build/**, and [skip ci] guards the message,
+      # so this commit never re-triggers the workflow.
+      - name: Commit rebuilt tokens
+        if: github.event_name == 'push'
+        run: |
+          if [ -n "$(git status --porcelain build)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add build
+            git commit -m "chore: rebuild tokens [skip ci]"
+            git push
+          else
+            echo "build/ already up to date"
+          fi
