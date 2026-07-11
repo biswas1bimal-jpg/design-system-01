@@ -134,6 +134,11 @@
         "type": "color",
         "prefix": "primitives"
       }
+    },
+    "black": {
+      "value": "#000000",
+      "type": "color",
+      "prefix": "primitives"
     }
   },
   "space": {
@@ -216,6 +221,11 @@
     },
     "xl": {
       "value": 16,
+      "type": "number",
+      "prefix": "primitives"
+    },
+    "2xl": {
+      "value": 20,
       "type": "number",
       "prefix": "primitives"
     },

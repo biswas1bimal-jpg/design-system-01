@@ -1,10 +1,10 @@
 # Design system — rules for Claude
 
 This repository is the code side of a Figma-driven design system.
-**Figma is the source of truth for tokens.** The files in `tokens/` are exported
-from the Figma **"Design Tokens"** plugin and must not be hand-edited to "fix" a value —
-fix it in Figma and re-export. (Format is the plugin's legacy `value`/`type`, not
-DTCG `$value`/`$type`.)
+**Figma is the primary source of truth for tokens**, but `tokens/` may be edited
+directly in code when convenient — either re-export from the Figma **"Design Tokens"**
+plugin, or hand-edit the JSON to match Figma. Keep code and Figma in sync either way.
+(Format is the plugin's legacy `value`/`type`, not DTCG `$value`/`$type`.)
 
 ## Token architecture (2 tiers today)
 1. **Primitives** — raw values. Never reference these directly for color in a component.
@@ -47,8 +47,9 @@ DTCG `$value`/`$type`.)
   `var(--interactive-*)`.
 - ✅ Sizing from the size tokens: `var(--space-*)`, `var(--radius-*)`, `var(--font-size-*)`,
   `var(--icon-size-*)`.
-- ❌ Never write a raw hex or px inside a component, and never use a `--color-*` primitive for color.
-- ❌ Never introduce a new color/size literal. If one is missing, tell me to add it in Figma.
+- ✅ Prefer semantic tokens over raw hex/px, and avoid `--color-*` primitives for color in a component.
+- ✅ If a token is missing, add it to `tokens/` (and mirror it in Figma when possible); raw literals
+  are acceptable only for values intentionally not tokenized (e.g. the glass translucency).
 - ✅ Every component must work in both light and dark with no extra code (tokens handle it).
 - ✅ New components go in `src/components/`, one file each, typed props, a named export (no default).
   Follow `src/components/Button.tsx` as the reference pattern.

@@ -3,13 +3,18 @@
  */
 
 [data-theme="dark"] {
+  --background-brand-dark: rgba(0, 0, 0, 0);
+  --background-brand-dark-hover: rgba(0, 0, 0, 0);
   --background-primary: var(--color-neutral-900);
   --background-secondary: var(--color-neutral-800);
   --background-brand: var(--color-blue-500);
+  --background-ghost-hover: var(--color-neutral-800);
   --text-primary: var(--color-neutral-50);
   --text-secondary: var(--color-neutral-400);
   --text-on-brand: var(--color-neutral-0);
   --border-default: var(--color-neutral-700);
+  --border-inverse: var(--color-neutral-0);
+  --border-brand-dark: var(--color-neutral-0);
   --interactive-primary: var(--color-blue-500);
   --interactive-hover: var(--color-blue-400);
 }

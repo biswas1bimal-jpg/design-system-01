@@ -28,6 +28,7 @@
   --color-red-500: #ef4444;
   --color-green-500: #22c55e;
   --color-amber-500: #f59e0b;
+  --color-black: #000000;
   --space-0: 0px;
   --space-1: 4px;
   --space-2: 8px;
@@ -44,6 +45,7 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
+  --radius-2xl: 20px;
   --radius-full: 9999px;
   --font-size-xs: 12px;
   --font-size-sm: 14px;
@@ -57,13 +59,18 @@
   --icon-size-md: 20px;
   --icon-size-lg: 24px;
   --icon-size-xl: 32px;
+  --border-brand-dark: rgba(255, 255, 255, 0);
   --background-primary: var(--color-neutral-0);
   --background-secondary: var(--color-neutral-50);
   --background-brand: var(--color-blue-600);
+  --background-brand-dark: var(--color-black);
+  --background-brand-dark-hover: var(--color-neutral-800);
+  --background-ghost-hover: var(--color-neutral-100);
   --text-primary: var(--color-neutral-900);
   --text-secondary: var(--color-neutral-500);
   --text-on-brand: var(--color-neutral-0);
   --border-default: var(--color-neutral-200);
+  --border-inverse: var(--color-neutral-1000);
   --interactive-primary: var(--color-blue-600);
   --interactive-hover: var(--color-blue-700);
 }
