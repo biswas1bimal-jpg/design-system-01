@@ -1,0 +1,70 @@
+name: Deploy Pages
+
+# Builds a single Pages site for the team:
+#   /            → hub (docs/hub.html)
+#   /app/        → live component gallery (Vite build of src/)
+#   /guide.html  → docs/index.html   (token & component reference)
+#   /workflow.html, /variables.html  → the other static pages
+#
+# One-time setup: Settings → Pages → Source → "GitHub Actions".
+# Then this runs on every push to main (or trigger it manually from any branch
+# via the Actions tab → "Deploy Pages" → Run workflow).
+
+on:
+  push:
+    branches: [main, claude/figma-button-components-3gdvz3]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
+        run: npm install
+
+      - name: Build tokens + gallery
+        run: |
+          npm run build
+          npm run build:app
+
+      - name: Assemble site
+        run: |
+          rm -rf site
+          mkdir -p site/app
+          cp -r dist/. site/app/
+          cp docs/hub.html       site/index.html
+          cp docs/index.html     site/guide.html
+          cp docs/workflow.html  site/workflow.html
+          cp docs/variables.html site/variables.html
+          touch site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
