@@ -1,0 +1,11 @@
+/* Order Option Row — Radio + label + trailing meta. Tokens only. */
+
+.ds-order-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-2) 0;
+}
+.ds-order-option__meta { color: var(--text-secondary); flex: none; }

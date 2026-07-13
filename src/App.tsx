@@ -19,7 +19,17 @@ import { ProductListRow } from './components/ProductListRow';
 import { ProductHeader } from './components/ProductHeader';
 import { LookPreview } from './components/LookPreview';
 import { SpecTable } from './components/SpecTable';
-import { SearchIcon, BellIcon } from './components/icons';
+import { BooleanButton } from './components/BooleanButton';
+import { ColorSelector } from './components/ColorSelector';
+import { NavBar, NavItem } from './components/NavBar';
+import { UploadArea } from './components/UploadArea';
+import { Sheet } from './components/Sheet';
+import { SuggestionSheet } from './components/SuggestionSheet';
+import { Sidebar } from './components/Sidebar';
+import { OrderOptionRow } from './components/OrderOptionRow';
+import { OrderSection } from './components/OrderSection';
+import { OrderItemCard } from './components/OrderItemCard';
+import { SearchIcon, BellIcon, HomeIcon, UserIcon, HeartIcon, SparkleIcon } from './components/icons';
 
 const VARIANTS: ButtonVariant[] = ['primary', 'secondary', 'ghost', 'glass', 'primary-dark'];
 
@@ -40,6 +50,10 @@ export function App() {
   const [picked, setPicked] = useState('courier');
   const [tab, setTab] = useState('details');
   const [qty, setQty] = useState(2);
+  const [boolOn, setBoolOn] = useState(true);
+  const [color, setColor] = useState('#2563eb');
+  const [ship, setShip] = useState('courier');
+  const [nav, setNav] = useState('home');
 
   const toggle = () => {
     const next = !dark;
@@ -198,6 +212,74 @@ export function App() {
             { label: 'Origin', value: 'Portugal' }
           ]}
         />
+      </Section>
+
+      <Section title="Boolean Button">
+        <BooleanButton pressed={boolOn} onPressedChange={setBoolOn} icon={<HeartIcon />}>Favourite</BooleanButton>
+        <BooleanButton pressed={!boolOn} onPressedChange={(p) => setBoolOn(!p)}>Off state</BooleanButton>
+      </Section>
+
+      <Section title="Color Selector">
+        <ColorSelector
+          label="Colour"
+          value={color}
+          onChange={setColor}
+          colors={[
+            { value: '#111827', name: 'Black' },
+            { value: '#2563eb', name: 'Blue' },
+            { value: '#22c55e', name: 'Green' },
+            { value: '#f59e0b', name: 'Amber' },
+            { value: '#ef4444', name: 'Red' }
+          ]}
+        />
+      </Section>
+
+      <Section title="Upload Area">
+        <UploadArea onSelect={() => {}} />
+      </Section>
+
+      <Section title="Nav Bar">
+        <NavBar>
+          <NavItem icon={<HomeIcon />} label="Home" active={nav === 'home'} onClick={() => setNav('home')} />
+          <NavItem icon={<SearchIcon />} label="Search" active={nav === 'search'} onClick={() => setNav('search')} />
+          <NavItem icon={<HeartIcon />} label="Saved" active={nav === 'saved'} onClick={() => setNav('saved')} />
+          <NavItem icon={<UserIcon />} label="Profile" active={nav === 'profile'} onClick={() => setNav('profile')} />
+        </NavBar>
+      </Section>
+
+      <Section title="Sidebar (glass)">
+        <div style={{ padding: 'var(--space-5)', borderRadius: 'var(--radius-xl)', background: 'linear-gradient(135deg, #2563eb, #8b3df5)' }}>
+          <Sidebar
+            onSelect={() => {}}
+            items={[
+              { icon: <HomeIcon />, label: 'Items', active: true },
+              { icon: <SearchIcon />, label: 'To card', count: 1 },
+              { icon: <SparkleIcon />, label: 'Generate' }
+            ]}
+          />
+        </div>
+      </Section>
+
+      <Section title="Sheet & Suggestion Sheet">
+        <Sheet title="Sheet title" detent="medium">
+          Drop any content into the sheet — it supports Medium and Large detents.
+        </Sheet>
+        <SuggestionSheet title="Detected items" subtitle="Tap to add to your look">
+          <ProductThumb title="Sweater" price="21.00 €" />
+          <ProductThumb title="Jeans" price="39.00 €" detected />
+          <ProductThumb title="Boots" price="59.00 €" />
+        </SuggestionSheet>
+      </Section>
+
+      <Section title="Order flow">
+        <OrderSection title="Delivery" onEdit={() => {}}>
+          <OrderOptionRow name="ship" value="courier" checked={ship === 'courier'} onChange={setShip} label="Courier" meta="Free" />
+          <OrderOptionRow name="ship" value="pickup" checked={ship === 'pickup'} onChange={setShip} label="Pickup point" meta="27.40 €" />
+        </OrderSection>
+        <OrderSection title="Summary">
+          <OrderItemCard title="Knit sweater" meta="Wool blend · size M" price="21.00 €" qty={1} />
+          <OrderItemCard title="Slim jeans" meta="Indigo · size 32" price="39.00 €" qty={1} />
+        </OrderSection>
       </Section>
     </main>
   );

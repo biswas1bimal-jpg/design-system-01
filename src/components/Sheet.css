@@ -1,0 +1,24 @@
+/* Sheet — bottom sheet surface. Tokens only. */
+
+.ds-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 320px;
+  padding: var(--space-3) var(--space-5) var(--space-6);
+  background: var(--background-primary);
+  border: var(--weight-border-1) solid var(--border-default);
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.12);
+}
+.ds-sheet--medium { min-height: 240px; }
+.ds-sheet--large { min-height: 380px; }
+.ds-sheet__grabber {
+  width: 36px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--border-default);
+  align-self: center;
+}
+.ds-sheet__title { color: var(--text-primary); }
+.ds-sheet__content { color: var(--text-secondary); flex: 1 1 auto; }

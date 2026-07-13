@@ -1,0 +1,22 @@
+/* Color Swatch / Selector — round samples with selected ring. Tokens only. */
+
+.ds-color-selector { display: flex; flex-direction: column; gap: var(--space-2); }
+.ds-color-selector__label { color: var(--text-primary); }
+.ds-color-selector__row { display: flex; gap: var(--space-3); }
+
+.ds-swatch {
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-full);
+  border: var(--weight-border-1) solid var(--border-default);
+  background: var(--swatch);
+  cursor: pointer;
+  padding: 0;
+}
+.ds-swatch--selected {
+  box-shadow: 0 0 0 var(--weight-border-2) var(--border-inverse), 0 0 0 4px var(--background-primary);
+}
+.ds-swatch:focus-visible {
+  outline: 2px solid var(--interactive-primary);
+  outline-offset: 3px;
+}

@@ -1,0 +1,29 @@
+/* Suggestion Sheet — sheet with a horizontal suggestion strip. Tokens only. */
+
+.ds-suggestion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 360px;
+  padding: var(--space-3) var(--space-5) var(--space-6);
+  background: var(--background-primary);
+  border: var(--weight-border-1) solid var(--border-default);
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.12);
+}
+.ds-suggestion__grabber {
+  width: 36px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--border-default);
+  align-self: center;
+}
+.ds-suggestion__head { display: flex; flex-direction: column; gap: 2px; }
+.ds-suggestion__title { color: var(--text-primary); font-family: var(--font-family-base); font-size: var(--font-size-xl); }
+.ds-suggestion__sub { color: var(--text-secondary); }
+.ds-suggestion__strip {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  padding-bottom: var(--space-2);
+}

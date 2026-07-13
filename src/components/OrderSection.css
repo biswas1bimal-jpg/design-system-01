@@ -1,0 +1,31 @@
+/* Order Section — titled card. Tokens only. */
+
+.ds-order-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 340px;
+  padding: var(--space-4);
+  background: var(--background-secondary);
+  border: var(--weight-border-1) solid var(--border-default);
+  border-radius: var(--radius-lg);
+}
+.ds-order-section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.ds-order-section__title { margin: 0; color: var(--text-primary); }
+.ds-order-section__edit {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.ds-order-section__edit svg { width: var(--icon-size-md); height: var(--icon-size-md); }
+.ds-order-section__edit:hover { color: var(--text-primary); }
+.ds-order-section__body { display: flex; flex-direction: column; }
