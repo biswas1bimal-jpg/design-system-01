@@ -101,6 +101,27 @@ export function App() {
         ))}
       </Section>
 
+      {/* Glass reads only over color — backdrop-filter has nothing to blur on a flat white
+          background. Shown over a gradient so the glassmorphism (Figma GLASS radius 15) is visible. */}
+      <section style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+        <h2 className="text-heading-h4" style={{ margin: 0, color: 'var(--text-primary)' }}>Glass · over color</h2>
+        <div
+          style={{
+            display: 'flex',
+            gap: 'var(--space-4)',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            padding: 'var(--space-8)',
+            borderRadius: 'var(--radius-2xl)',
+            background: 'linear-gradient(135deg, #2563eb 0%, #8b3df5 55%, #f0489a 100%)'
+          }}
+        >
+          <Button variant="glass" leadingIcon={<SearchIcon />}>Glass</Button>
+          <Button variant="glass" size="lg">Large glass</Button>
+          <IconButton variant="glass" size="md" aria-label="Search"><SearchIcon /></IconButton>
+        </div>
+      </section>
+
       <Section title="Input">
         <Input size="sm" placeholder="Small" />
         <Input size="md" label="E-mail" placeholder="you@studio.com" leadingIcon={<SearchIcon />} />
