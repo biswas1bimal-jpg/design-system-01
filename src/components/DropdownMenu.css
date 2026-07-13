@@ -1,0 +1,18 @@
+/* Dropdown Menu — surface container. Tokens only. */
+
+.ds-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 220px;
+  padding: var(--space-2);
+  background: var(--background-primary);
+  border: var(--weight-border-1) solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+.ds-dropdown__divider {
+  height: var(--weight-border-1);
+  background: var(--border-default);
+  margin: var(--space-1) 0;
+}

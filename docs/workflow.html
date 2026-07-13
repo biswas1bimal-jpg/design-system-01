@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design System · Workflow</title>
+<style>
+  :root {
+    --bg:#ffffff; --bg-2:#f7f8fa; --card:#ffffff; --ink:#000000; --muted:#6b7280;
+    --hairline:rgba(0,0,0,.12); --hairline-2:rgba(0,0,0,.18);
+    --accent:#2563eb;                 /* designer */
+    --accent-bg:rgba(37,99,235,.09); --accent-bd:rgba(37,99,235,.35);
+    --dev:#0f172a;                    /* developer */
+    --dev-bg:rgba(15,23,42,.06); --dev-bd:rgba(15,23,42,.28);
+    --auto:#0f9d58;                   /* automation / CI */
+    --auto-bg:rgba(15,157,88,.10); --auto-bd:rgba(15,157,88,.35);
+    --r-md:8px; --r-lg:12px; --r-xl:16px; --r-2xl:22px; --r-full:9999px;
+    --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px; --s10:40px; --s12:48px;
+    --sans:"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --maxw: 1080px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin:0; background:
+      radial-gradient(1200px 500px at 50% -10%, rgba(37,99,235,.05), transparent 70%) var(--bg);
+      color: var(--ink); font-family: var(--sans); font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: var(--s10) var(--s5) 96px; }
+  code { font-family: var(--mono); font-size:.88em; }
+
+  /* hero */
+  .eyebrow { font-size:12px; text-transform:uppercase; letter-spacing:.15em; color:var(--accent); font-weight:700; }
+  h1 { font-size: clamp(28px, 5vw, 44px); line-height:1.05; letter-spacing:-.025em; margin:12px 0 12px; font-weight:800; text-wrap:balance; }
+  .lede { font-size:18px; color:var(--muted); max-width:64ch; margin:0; }
+  .legend { display:flex; flex-wrap:wrap; gap:var(--s5); margin-top:var(--s6); font-size:13.5px; }
+  .legend .k { display:inline-flex; align-items:center; gap:8px; font-weight:600; }
+  .legend .sw { width:14px; height:14px; border-radius:5px; border:1.5px solid; }
+  .sw.designer { background:var(--accent-bg); border-color:var(--accent-bd); }
+  .sw.dev { background:var(--dev-bg); border-color:var(--dev-bd); }
+  .sw.auto { background:var(--auto-bg); border-color:var(--auto-bd); }
+
+  section { margin-top: var(--s12); }
+  .sec-head { display:flex; align-items:baseline; gap:var(--s3); margin-bottom:var(--s5); }
+  .sec-head .num { font-family:var(--mono); font-size:12px; color:var(--muted); }
+  .sec-head h2 { font-size:22px; letter-spacing:-.02em; margin:0; font-weight:700; }
+  .sec-intro { color:var(--muted); max-width:70ch; margin:-6px 0 var(--s6); }
+
+  /* source of truth */
+  .truth { display:grid; grid-template-columns: 1fr auto 1fr; align-items:center; gap:var(--s5);
+    background:var(--card); border:1px solid var(--hairline); border-radius:var(--r-xl); padding:var(--s6); }
+  .truth .core { text-align:center; }
+  .truth .fig { display:inline-flex; flex-direction:column; align-items:center; gap:10px;
+    border:1.5px solid var(--accent-bd); background:var(--accent-bg); border-radius:var(--r-lg); padding:var(--s5) var(--s6); }
+  .truth .fig .nm { font-weight:700; }
+  .truth .fig .sub { font-size:12.5px; color:var(--muted); font-family:var(--mono); }
+  .truth .side { }
+  .truth .side h4 { margin:0 0 6px; font-size:14px; }
+  .truth .side p { margin:0; color:var(--muted); font-size:13.5px; }
+  .truth .side.r { text-align:right; }
+  .truth .conn { color:var(--muted); font-size:12px; text-align:center; }
+  .truth .conn svg { display:block; margin:0 auto; color:var(--hairline-2); }
+
+  /* pipeline */
+  .pipe { display:flex; align-items:stretch; gap:0; overflow-x:auto; padding-bottom:6px; }
+  .node { flex: 1 1 0; min-width: 150px; background:var(--card); border:1px solid var(--hairline);
+    border-radius:var(--r-lg); padding:var(--s4); display:flex; flex-direction:column; gap:8px; }
+  .node .ic { width:30px; height:30px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center;
+    background:var(--bg-2); border:1px solid var(--hairline); color:var(--ink); }
+  .node .ic svg { width:17px; height:17px; }
+  .node .t { font-weight:700; font-size:14.5px; letter-spacing:-.01em; }
+  .node .files { display:flex; flex-direction:column; gap:3px; }
+  .node .files code { font-size:11.5px; color:var(--muted); background:var(--bg-2); border:1px solid var(--hairline);
+    padding:2px 6px; border-radius:5px; align-self:flex-start; }
+  .node .by { margin-top:auto; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:2px 8px; border-radius:var(--r-full); align-self:flex-start; border:1px solid; }
+  .by.designer { color:var(--accent); background:var(--accent-bg); border-color:var(--accent-bd); }
+  .by.dev { color:var(--dev); background:var(--dev-bg); border-color:var(--dev-bd); }
+  .by.auto { color:var(--auto); background:var(--auto-bg); border-color:var(--auto-bd); }
+  .arrow { flex:0 0 34px; display:flex; align-items:center; justify-content:center; color:var(--hairline-2); }
+  .arrow svg { width:22px; height:22px; }
+  .pipe-note { margin-top:var(--s4); display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:var(--muted);
+    background:var(--auto-bg); border:1px solid var(--auto-bd); border-left-width:3px; border-radius:var(--r-md); padding:var(--s3) var(--s4); }
+  .pipe-note b { color:var(--ink); }
+  .pipe-note svg { flex:none; color:var(--auto); margin-top:2px; }
+
+  /* lifecycle */
+  .cycle { display:grid; grid-template-columns: repeat(3, 1fr); gap:var(--s4); }
+  .step { position:relative; background:var(--card); border:1px solid var(--hairline); border-radius:var(--r-lg); padding:var(--s5); }
+  .step.designer { border-top:3px solid var(--accent); }
+  .step.dev { border-top:3px solid var(--dev); }
+  .step.auto { border-top:3px solid var(--auto); }
+  .step .top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .step .n { font-family:var(--mono); font-size:12px; color:var(--muted); font-weight:600; }
+  .step .role { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:2px 8px; border-radius:var(--r-full); border:1px solid; }
+  .role.designer { color:var(--accent); background:var(--accent-bg); border-color:var(--accent-bd); }
+  .role.dev { color:var(--dev); background:var(--dev-bg); border-color:var(--dev-bd); }
+  .role.auto { color:var(--auto); background:var(--auto-bg); border-color:var(--auto-bd); }
+  .step h4 { margin:0 0 5px; font-size:15px; letter-spacing:-.01em; }
+  .step p { margin:0; font-size:13px; color:var(--muted); }
+  .step p code { color:var(--ink); }
+  .loopback { margin-top:var(--s4); display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--muted);
+    border:1px dashed var(--hairline-2); border-radius:var(--r-md); padding:var(--s3) var(--s4); }
+  .loopback svg { flex:none; color:var(--accent); }
+  .loopback b { color:var(--ink); }
+
+  /* responsibilities */
+  .tbl-wrap { overflow-x:auto; border:1px solid var(--hairline); border-radius:var(--r-lg); }
+  table { border-collapse:collapse; width:100%; font-size:13.5px; }
+  th, td { text-align:left; padding:11px 14px; border-bottom:1px solid var(--hairline); vertical-align:top; }
+  th { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:700; background:var(--bg-2); }
+  tr:last-child td { border-bottom:0; }
+  td .who { display:inline-flex; align-items:center; gap:7px; font-weight:600; }
+  td .who .dot { width:9px; height:9px; border-radius:50%; }
+  .dot.designer{background:var(--accent);} .dot.dev{background:var(--dev);} .dot.auto{background:var(--auto);}
+  td code { background:var(--bg-2); border:1px solid var(--hairline); padding:1px 6px; border-radius:5px; white-space:nowrap; }
+
+  /* guarantees */
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:var(--s4); }
+  .g { background:var(--card); border:1px solid var(--hairline); border-radius:var(--r-lg); padding:var(--s5); }
+  .g .h { display:flex; align-items:center; gap:9px; font-weight:700; font-size:14.5px; margin-bottom:6px; }
+  .g .h svg { color:var(--accent); flex:none; }
+  .g p { margin:0; color:var(--muted); font-size:13px; }
+  .foot { margin-top:var(--s12); border-top:1px solid var(--hairline); padding-top:var(--s5); color:var(--muted); font-size:13px; }
+
+  @media (max-width: 820px) {
+    .truth { grid-template-columns:1fr; text-align:center; }
+    .truth .side.r, .truth .side { text-align:center; }
+    .pipe { flex-direction:column; }
+    .arrow { flex-basis:auto; height:30px; transform:rotate(90deg); }
+    .cycle { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">How the system is used in development</div>
+  <h1>Дизайн-система: как работает вся связка</h1>
+  <p class="lede">Единый визуальный язык живёт в Figma, автоматически превращается в код и потребляется разработчиками без ручного подбора цветов, отступов и шрифтов. Ниже — поток данных, роли и жизненный цикл одного изменения.</p>
+  <div class="legend">
+    <span class="k"><span class="sw designer"></span> Дизайнер</span>
+    <span class="k"><span class="sw dev"></span> Разработчик</span>
+    <span class="k"><span class="sw auto"></span> Автоматика · CI / build</span>
+  </div>
+
+  <!-- 00 source of truth -->
+  <section>
+    <div class="sec-head"><span class="num">00</span><h2>Один источник правды</h2></div>
+    <p class="sec-intro">Все решения о токенах и компонентах принимаются в Figma. Код никогда не «расходится» самовольно: он либо сгенерирован из токенов, либо синхронизирован обратно в Figma.</p>
+    <div class="truth">
+      <div class="side r">
+        <h4>Дизайнер проектирует</h4>
+        <p>Заводит переменные, текст-стили и компоненты; принимает визуальные решения.</p>
+      </div>
+      <div class="core">
+        <div class="fig">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><circle cx="8" cy="7" r="3"/><circle cx="8" cy="17" r="3"/><circle cx="16" cy="7" r="3"/></svg>
+          <span class="nm">Figma</span>
+          <span class="sub">Variables · Text Styles · Components</span>
+        </div>
+        <div class="conn" style="margin-top:10px">источник правды</div>
+      </div>
+      <div class="side">
+        <h4>Разработчик потребляет</h4>
+        <p>Собирает интерфейс из готовых токенов и компонентов, ничего не «пикселя вручную».</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 pipeline -->
+  <section>
+    <div class="sec-head"><span class="num">01</span><h2>Связка: от Figma до экрана</h2></div>
+    <p class="sec-intro">Токены проходят один автоматический конвейер. Дизайнер меняет значение в Figma → оно попадает в <code>tokens/</code> → сборка превращает его в CSS-переменные и типизированную TS-карту → приложение ссылается на переменные.</p>
+    <div class="pipe">
+      <div class="node">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><circle cx="8" cy="7" r="2.4"/><circle cx="8" cy="17" r="2.4"/><circle cx="16" cy="7" r="2.4"/></svg></span>
+        <span class="t">Figma</span>
+        <div class="files"><code>Variables</code><code>Text Styles</code><code>Components</code></div>
+        <span class="by designer">Дизайнер</span>
+      </div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></div>
+      <div class="node">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"/><path d="M9 3h6v4H9z"/></svg></span>
+        <span class="t">tokens/</span>
+        <div class="files"><code>primitives.json</code><code>semantic.json</code><code>typography.json</code></div>
+        <span class="by designer">Sync ← Figma</span>
+      </div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></div>
+      <div class="node">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></span>
+        <span class="t">build.js</span>
+        <div class="files"><code>Style Dictionary</code><code>+ typography gen</code></div>
+        <span class="by auto">Автоматика</span>
+      </div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></div>
+      <div class="node">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l8-4 8 4v10l-8 4-8-4z"/><path d="M4 7l8 4 8-4M12 21V11"/></svg></span>
+        <span class="t">build/</span>
+        <div class="files"><code>variables.*.css</code><code>typography.css</code><code>tokens.ts</code></div>
+        <span class="by auto">Сгенерировано</span>
+      </div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></div>
+      <div class="node">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></span>
+        <span class="t">Приложение</span>
+        <div class="files"><code>var(--token)</code><code>.text-*</code><code>&lt;Button/&gt;</code></div>
+        <span class="by dev">Разработчик</span>
+      </div>
+    </div>
+    <div class="pipe-note">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>
+      <div><b>CI держит <code>build/</code> актуальным.</b> Workflow <code>build-tokens.yml</code> ловит любой push в <code>main</code>, затрагивающий <code>tokens/</code>, пересобирает артефакты и коммитит их обратно — разработчику не нужно запускать сборку руками.</div>
+    </div>
+  </section>
+
+  <!-- 02 lifecycle -->
+  <section>
+    <div class="sec-head"><span class="num">02</span><h2>Жизненный цикл одного изменения</h2></div>
+    <p class="sec-intro">Пример: нужно добавить новый статусный цвет (или поправить компонент). Порядок шагов и кто за них отвечает.</p>
+    <div class="cycle">
+      <div class="step designer">
+        <div class="top"><span class="n">01</span><span class="role designer">Дизайнер</span></div>
+        <h4>Решение в Figma</h4>
+        <p>Заводит/меняет переменную, текст-стиль или компонент. Это становится новой «правдой».</p>
+      </div>
+      <div class="step designer">
+        <div class="top"><span class="n">02</span><span class="role designer">Дизайнер / Синхронизация</span></div>
+        <h4>Токены → в код</h4>
+        <p>Значение попадает в <code>tokens/*.json</code> — через Figma-плагин «Design Tokens» или правкой JSON под Figma.</p>
+      </div>
+      <div class="step auto">
+        <div class="top"><span class="n">03</span><span class="role auto">Автоматика</span></div>
+        <h4>Сборка артефактов</h4>
+        <p>Push в <code>main</code> → CI запускает <code>npm run build</code> → пересобирает <code>build/css</code> и <code>build/ts</code>, коммитит их.</p>
+      </div>
+      <div class="step dev">
+        <div class="top"><span class="n">04</span><span class="role dev">Разработчик</span></div>
+        <h4>Потребление</h4>
+        <p>Ссылается на <code>var(--status-*)</code>, класс <code>.text-*</code> или компонент. Light/dark и стиль — «бесплатно».</p>
+      </div>
+      <div class="step dev">
+        <div class="top"><span class="n">05</span><span class="role dev">Разработчик</span></div>
+        <h4>Нет токена? Заводит</h4>
+        <p>Если значения не хватает — добавляет в <code>tokens/</code> и <b>обязательно зеркалит в Figma</b>, а не пишет сырой hex.</p>
+      </div>
+      <div class="step designer">
+        <div class="top"><span class="n">06</span><span class="role designer">Дизайнер</span></div>
+        <h4>Синхронизация обратно</h4>
+        <p>Новое значение закрепляется в Figma как источнике правды — круг замыкается, расхождений нет.</p>
+      </div>
+    </div>
+    <div class="loopback">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+      <div><b>Цикл замкнут:</b> код никогда не уходит вперёд Figma. Всё, что появилось в коде, возвращается в источник правды на шаге 06.</div>
+    </div>
+  </section>
+
+  <!-- 03 responsibilities -->
+  <section>
+    <div class="sec-head"><span class="num">03</span><h2>Кто за что отвечает</h2></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Слой</th><th>Что это</th><th>Кто владеет</th></tr></thead>
+        <tbody>
+          <tr><td>Figma</td><td>Variables, Text Styles, Components — визуальные решения</td><td><span class="who"><span class="dot designer"></span>Дизайнер</span></td></tr>
+          <tr><td><code>tokens/*.json</code></td><td>Токены в коде (примитивы, семантика, типографика, иконки)</td><td><span class="who"><span class="dot designer"></span>Дизайнер</span> <span style="color:var(--muted)">+ синхронизация</span></td></tr>
+          <tr><td><code>build.js</code></td><td>Генерация CSS-переменных, TS-карты и текст-стилей</td><td><span class="who"><span class="dot auto"></span>Автоматика</span></td></tr>
+          <tr><td><code>build/</code></td><td>Сгенерированные <code>*.css</code> / <code>*.ts</code> — не редактируются руками</td><td><span class="who"><span class="dot auto"></span>CI</span></td></tr>
+          <tr><td><code>src/components/</code></td><td>React-компоненты (сейчас Button, IconButton) на токенах</td><td><span class="who"><span class="dot dev"></span>Разработчик</span></td></tr>
+          <tr><td>Продуктовый UI</td><td>Экраны, собранные из компонентов и токенов</td><td><span class="who"><span class="dot dev"></span>Разработчик</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 04 guarantees -->
+  <section>
+    <div class="sec-head"><span class="num">04</span><h2>Что даёт эта связка</h2></div>
+    <div class="cards">
+      <div class="g">
+        <div class="h"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z"/></svg> Light / dark бесплатно</div>
+        <p>Имя переменной одинаково в обеих темах — разработчик не пишет второй цвет, тема переключается одним атрибутом.</p>
+      </div>
+      <div class="g">
+        <div class="h"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Ноль «магических» чисел</div>
+        <p>Никаких сырых hex и px в компонентах — только токены. Меняешь значение в одном месте — обновляется везде.</p>
+      </div>
+      <div class="g">
+        <div class="h"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg> Синхронизация автоматом</div>
+        <p>CI пересобирает <code>build/</code> на каждый релевантный push — код и дизайн не расходятся сами по себе.</p>
+      </div>
+      <div class="g">
+        <div class="h"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg> Один язык у всех</div>
+        <p>Дизайнер и разработчик называют вещи одинаково: <code>interactive/primary</code>, <code>Heading/H3</code>, <code>space/4</code>.</p>
+      </div>
+    </div>
+    <div class="foot">Источник правды — Figma. Токены и текст-стили синхронизированы в <code>tokens/</code>, собираются в <code>build/</code>, потребляются в <code>src/</code>. Эта схема — обзор связки для дизайн- и фронтенд-команд.</div>
+  </section>
+</div>
+</body>
+</html>

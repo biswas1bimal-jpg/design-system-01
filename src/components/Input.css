@@ -1,0 +1,67 @@
+/* Input — layout + state, built entirely from tokens. */
+
+.ds-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.ds-field__label {
+  color: var(--text-primary);
+}
+.ds-field__error {
+  color: var(--text-error);
+}
+
+.ds-input {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--background-primary);
+  border: var(--weight-border-1) solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding-inline: var(--space-3);
+  color: var(--text-primary);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.ds-input:focus-within {
+  border-color: var(--interactive-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--interactive-primary) 24%, transparent);
+}
+.ds-input--error {
+  border-color: var(--interactive-error);
+}
+.ds-input--error:focus-within {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--interactive-error) 24%, transparent);
+}
+
+.ds-input__icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--text-secondary);
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+.ds-input__icon svg { width: 100%; height: 100%; display: block; }
+
+.ds-input__control {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-family: var(--font-family-base);
+  color: inherit;
+}
+.ds-input__control::placeholder { color: var(--text-placeholder); }
+.ds-input__control:disabled { cursor: not-allowed; }
+.ds-input:has(.ds-input__control:disabled) { opacity: 0.5; }
+
+/* Sizes: vertical padding + font-size (height grows from padding, Figma-style) */
+.ds-input--sm { padding-block: var(--space-2); font-size: var(--font-size-sm); }
+.ds-input--md { padding-block: var(--space-3); font-size: var(--font-size-md); }
+.ds-input--lg { padding-block: var(--space-4); font-size: var(--font-size-md); }
+.ds-input--xl {
+  padding-block: var(--space-5);
+  border-radius: var(--radius-xl);
+  font-size: var(--font-size-lg);
+}

@@ -119,6 +119,11 @@
         "value": "#ef4444",
         "type": "color",
         "prefix": "primitives"
+      },
+      "600": {
+        "value": "#dc2626",
+        "type": "color",
+        "prefix": "primitives"
       }
     },
     "green": {
@@ -126,11 +131,33 @@
         "value": "#22c55e",
         "type": "color",
         "prefix": "primitives"
+      },
+      "600": {
+        "value": "#16a34a",
+        "type": "color",
+        "prefix": "primitives"
       }
     },
     "amber": {
       "500": {
         "value": "#f59e0b",
+        "type": "color",
+        "prefix": "primitives"
+      },
+      "600": {
+        "value": "#d97706",
+        "type": "color",
+        "prefix": "primitives"
+      }
+    },
+    "border": {
+      "light-border": {
+        "value": "rgba(255,255,255,0.08)",
+        "type": "color",
+        "prefix": "primitives"
+      },
+      "dark-border": {
+        "value": "rgba(0,0,0,0.08)",
         "type": "color",
         "prefix": "primitives"
       }
@@ -219,6 +246,11 @@
       "type": "number",
       "prefix": "primitives"
     },
+    "2xl": {
+      "value": 20,
+      "type": "number",
+      "prefix": "primitives"
+    },
     "full": {
       "value": 9999,
       "type": "number",
@@ -267,6 +299,18 @@
         "type": "number",
         "prefix": "primitives"
       }
+    }
+  },
+  "weight": {
+    "border-1": {
+      "value": 1,
+      "type": "number",
+      "prefix": "primitives"
+    },
+    "border-2": {
+      "value": 2,
+      "type": "number",
+      "prefix": "primitives"
     }
   }
 }

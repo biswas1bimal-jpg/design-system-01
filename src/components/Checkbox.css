@@ -1,0 +1,56 @@
+/* Checkbox — visually-hidden native input + styled box. Tokens only. */
+
+.ds-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  color: var(--text-primary);
+}
+.ds-check__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.ds-check__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  border: var(--weight-border-2) solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--background-primary);
+  color: var(--text-on-brand);
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.ds-check__mark {
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 100ms ease, transform 100ms ease;
+}
+
+/* checked */
+.ds-check--blue .ds-check__input:checked ~ .ds-check__box {
+  background: var(--interactive-primary);
+  border-color: var(--interactive-primary);
+}
+.ds-check--black .ds-check__input:checked ~ .ds-check__box {
+  background: var(--background-inverse);
+  border-color: var(--background-inverse);
+  color: var(--text-inverse);
+}
+.ds-check__input:checked ~ .ds-check__box .ds-check__mark {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* focus + disabled */
+.ds-check__input:focus-visible ~ .ds-check__box {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--interactive-primary) 24%, transparent);
+}
+.ds-check__input:disabled ~ .ds-check__box { opacity: 0.4; }
+.ds-check:has(.ds-check__input:disabled) { cursor: not-allowed; color: var(--text-secondary); }

@@ -1,0 +1,46 @@
+/* Toast — surface card + status icon-circle. Tokens only. */
+
+.ds-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 360px;
+  padding: var(--space-4);
+  background: var(--background-primary);
+  border: var(--weight-border-1) solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+.ds-toast__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-full);
+  color: var(--text-on-brand);
+  background: var(--tone, var(--status-neutral));
+}
+.ds-toast__icon svg { width: var(--icon-size-md); height: var(--icon-size-md); }
+.ds-toast__content { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ds-toast__title { color: var(--text-primary); }
+.ds-toast__text { color: var(--text-secondary); }
+.ds-toast__close {
+  flex: none;
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.ds-toast__close svg { width: var(--icon-size-md); height: var(--icon-size-md); }
+.ds-toast__close:hover { color: var(--text-primary); }
+
+.ds-toast--neutral { --tone: var(--status-neutral); }
+.ds-toast--info    { --tone: var(--status-info); }
+.ds-toast--success { --tone: var(--status-success); }
+.ds-toast--warning { --tone: var(--status-warning); }
+.ds-toast--error   { --tone: var(--status-error); }

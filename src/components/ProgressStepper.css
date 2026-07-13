@@ -1,0 +1,32 @@
+/* Progress Stepper — title + track + steps. Tokens only. */
+
+.ds-pstepper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  width: 100%;
+  max-width: 340px;
+  background: var(--background-primary);
+  border: var(--weight-border-1) solid var(--border-default);
+  border-radius: var(--radius-lg);
+}
+.ds-pstepper__title { color: var(--text-primary); }
+.ds-pstepper__track {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--background-secondary);
+  overflow: hidden;
+}
+.ds-pstepper__fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--border-inverse);
+  transition: width 200ms ease;
+}
+.ds-pstepper__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}

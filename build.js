@@ -1,5 +1,5 @@
 import StyleDictionary from 'style-dictionary';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 
 // Tokens are exported from the Figma "Design Tokens" plugin into tokens/.
 // That plugin writes the LEGACY format (value/type, NOT DTCG $value/$type),
@@ -85,4 +85,43 @@ const dark = new StyleDictionary({
 await light.buildAllPlatforms();
 await dark.buildAllPlatforms();
 
-console.log('✅ Tokens built: build/css/variables.light.css, variables.dark.css, build/ts/tokens.ts');
+// ---- TYPOGRAPHY ----------------------------------------------------------
+// The Geist type styles (mirrored from Figma's "Typography — Geist" text
+// styles) are composite — family + weight + size + line-height together — which
+// the legacy Style Dictionary color/number pipeline can't express as a single
+// variable. So we emit them directly: a `.text-*` utility class per style plus
+// a typed CSS-in-JS map. Consume the class in CSS (`class="text-heading-h3"`)
+// or the map in React (`style={Typography.HeadingH3}`).
+const typography = JSON.parse(readFileSync('tokens/typography.json', 'utf8'));
+const family = typography.fontFamily;
+const styles = typography.styles;
+
+const pascal = (k) => k.split('-').map((p) => p[0].toUpperCase() + p.slice(1)).join('');
+
+let css = `/* AUTO-GENERATED from tokens/typography.json — do not edit by hand. */\n`;
+css += `:root {\n  --font-family-base: ${family};\n}\n\n`;
+for (const [name, s] of Object.entries(styles)) {
+  css += `.text-${name} {\n`;
+  css += `  font-family: var(--font-family-base);\n`;
+  css += `  font-weight: ${s.weight};\n`;
+  css += `  font-size: ${s.size}px;\n`;
+  css += `  line-height: ${s.lineHeight};\n`;
+  css += `}\n`;
+}
+
+let ts = `/* AUTO-GENERATED from tokens/typography.json — do not edit by hand. */\n`;
+ts += `import type { CSSProperties } from 'react';\n\n`;
+ts += `export const FontFamilyBase = ${JSON.stringify(family)};\n\n`;
+ts += `export const Typography = {\n`;
+for (const [name, s] of Object.entries(styles)) {
+  ts += `  ${pascal(name)}: { fontFamily: FontFamilyBase, fontWeight: ${s.weight}, fontSize: ${s.size}, lineHeight: ${s.lineHeight} },\n`;
+}
+ts += `} satisfies Record<string, CSSProperties>;\n\n`;
+ts += `export type TypographyStyle = keyof typeof Typography;\n`;
+
+mkdirSync('build/css', { recursive: true });
+mkdirSync('build/ts', { recursive: true });
+writeFileSync('build/css/typography.css', css);
+writeFileSync('build/ts/typography.ts', ts);
+
+console.log('✅ Tokens built: build/css/variables.light.css, variables.dark.css, build/css/typography.css, build/ts/tokens.ts, build/ts/typography.ts');

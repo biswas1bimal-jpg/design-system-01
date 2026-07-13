@@ -1,0 +1,51 @@
+/* Layout for IconButton — a square whose side equals the size token, with the
+   icon centered. Colors come from surface.css. Radius is a uniform 20px. */
+
+.ds-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: var(--radius-2xl);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.ds-icon-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ds-icon-button__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ds-icon-button--sm {
+  width: var(--space-8);
+  height: var(--space-8);
+}
+.ds-icon-button--sm .ds-icon-button__icon {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+}
+
+.ds-icon-button--md {
+  width: var(--space-10);
+  height: var(--space-10);
+}
+.ds-icon-button--md .ds-icon-button__icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+
+.ds-icon-button--lg {
+  width: var(--space-12);
+  height: var(--space-12);
+}
+.ds-icon-button--lg .ds-icon-button__icon {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+}

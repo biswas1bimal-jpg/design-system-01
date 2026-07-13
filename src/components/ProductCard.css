@@ -1,0 +1,33 @@
+/* Product Card — cover + price + title. Tokens only. */
+
+.ds-product-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.ds-product-card--sm { width: 140px; }
+.ds-product-card--md { width: 180px; }
+
+.ds-product-card__cover {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
+  background: var(--background-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.ds-product-card__cover img { width: 100%; height: 100%; object-fit: cover; }
+.ds-photo-ph { width: var(--icon-size-xl); height: var(--icon-size-xl); color: var(--text-secondary); }
+
+.ds-product-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+}
+.ds-product-card__old { color: var(--text-secondary); text-decoration: line-through; }
+.ds-product-card__reg { color: var(--text-primary); }
+.ds-product-card__sale { color: var(--text-error); }
+.ds-product-card__title { color: var(--text-secondary); }

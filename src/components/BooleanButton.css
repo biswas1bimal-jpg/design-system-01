@@ -1,0 +1,24 @@
+/* Boolean Button — on/off toggle. Tokens only. */
+
+.ds-bool {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: var(--weight-border-1) solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family-base);
+  cursor: pointer;
+}
+.ds-bool:hover { background: var(--background-ghost-hover); }
+.ds-bool__icon { display: inline-flex; width: var(--icon-size-md); height: var(--icon-size-md); }
+.ds-bool__icon svg { width: 100%; height: 100%; }
+
+.ds-bool--on {
+  background: var(--background-inverse);
+  border-color: var(--background-inverse);
+  color: var(--text-inverse);
+}
+.ds-bool--on:hover { background: var(--background-inverse); }

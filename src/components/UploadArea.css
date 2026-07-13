@@ -1,0 +1,46 @@
+/* Upload Area — dropzone (empty) / image + remove (filled). Tokens only. */
+
+.ds-upload {
+  position: relative;
+  width: 200px;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+.ds-upload--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border: var(--weight-border-2) dashed var(--border-default);
+  background: var(--background-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.ds-upload--empty:hover { background: var(--background-ghost-hover); }
+.ds-upload__icon { display: inline-flex; width: var(--icon-size-xl); height: var(--icon-size-xl); }
+.ds-upload__icon svg { width: 100%; height: 100%; }
+.ds-upload__label { color: var(--text-primary); }
+.ds-upload__hint { display: inline-flex; align-items: center; gap: 4px; color: var(--text-secondary); }
+.ds-upload__hint svg { width: var(--icon-size-sm); height: var(--icon-size-sm); }
+
+.ds-upload--filled { border: var(--weight-border-1) solid var(--border-default); }
+.ds-upload__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ds-upload__remove {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-8);
+  height: var(--space-8);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--background-inverse);
+  color: var(--text-inverse);
+  cursor: pointer;
+}
+.ds-upload__remove svg { width: var(--icon-size-md); height: var(--icon-size-md); }

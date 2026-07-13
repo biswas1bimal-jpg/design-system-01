@@ -1,0 +1,60 @@
+/* Sidebar — frosted-glass rail. Translucency is the intentional non-token
+   literal (glass), colors otherwise from tokens. */
+
+.ds-sidebar {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius-2xl);
+  background: color-mix(in srgb, var(--background-secondary) 55%, transparent);
+  border: var(--weight-border-1) solid color-mix(in srgb, var(--text-on-brand) 40%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.ds-sidebar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  width: 52px;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.ds-sidebar__square {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-lg);
+  background: var(--background-primary);
+  border: var(--weight-border-1) solid var(--border-default);
+  color: var(--text-primary);
+}
+.ds-sidebar__square svg { width: var(--icon-size-md); height: var(--icon-size-md); }
+.ds-sidebar__item--active .ds-sidebar__square {
+  background: var(--background-inverse);
+  border-color: var(--background-inverse);
+  color: var(--text-inverse);
+}
+.ds-sidebar__badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--status-error);
+  color: var(--text-on-brand);
+  font-weight: 700;
+}
+.ds-sidebar__label { color: var(--text-primary); }

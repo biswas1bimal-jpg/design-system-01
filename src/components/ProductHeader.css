@@ -1,0 +1,23 @@
+/* Product Header — name + price + rating. Tokens only. */
+
+.ds-pheader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 320px;
+}
+.ds-pheader__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+.ds-pheader__name { color: var(--text-primary); }
+.ds-pheader__price { color: var(--text-primary); font-family: var(--font-family-base); font-size: var(--font-size-xl); }
+.ds-pheader__rating { display: flex; align-items: center; gap: var(--space-2); }
+.ds-pheader__stars { display: inline-flex; gap: 2px; }
+.ds-pheader__stars svg { width: var(--icon-size-sm); height: var(--icon-size-sm); }
+.ds-pheader__stars .is-on { color: var(--status-warning); }
+.ds-pheader__stars .is-off { color: var(--border-default); }
+.ds-pheader__reviews { color: var(--text-secondary); }

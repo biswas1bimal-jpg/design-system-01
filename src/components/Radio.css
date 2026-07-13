@@ -1,0 +1,48 @@
+/* Radio — visually-hidden native input + styled ring. Tokens only. */
+
+.ds-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  color: var(--text-primary);
+}
+.ds-radio__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.ds-radio__ring {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  border: var(--weight-border-2) solid var(--border-default);
+  border-radius: var(--radius-full);
+  transition: border-color 120ms ease;
+}
+.ds-radio__ring::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-full);
+  background: var(--border-inverse);
+  transform: scale(0);
+  transition: transform 110ms ease;
+}
+.ds-radio__input:checked ~ .ds-radio__ring {
+  border-color: var(--border-inverse);
+}
+.ds-radio__input:checked ~ .ds-radio__ring::after {
+  transform: scale(1);
+}
+.ds-radio__input:focus-visible ~ .ds-radio__ring {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--interactive-primary) 24%, transparent);
+}
+.ds-radio__input:disabled ~ .ds-radio__ring { opacity: 0.4; }
+.ds-radio:has(.ds-radio__input:disabled) { cursor: not-allowed; color: var(--text-secondary); }

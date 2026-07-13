@@ -1,0 +1,28 @@
+/* Tabs — underline indicator. Tokens only. */
+
+.ds-tabs {
+  display: inline-flex;
+  gap: var(--space-5);
+  border-bottom: var(--weight-border-1) solid var(--border-default);
+}
+.ds-tabs__tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-family-base);
+  color: var(--text-secondary);
+  padding: var(--space-3) 0;
+  margin-bottom: calc(-1 * var(--weight-border-1));
+  border-bottom: var(--weight-border-2) solid transparent;
+  cursor: pointer;
+}
+.ds-tabs__tab:hover { color: var(--text-primary); }
+.ds-tabs__tab--active {
+  color: var(--text-primary);
+  border-bottom-color: var(--border-inverse);
+}
+.ds-tabs__tab:focus-visible {
+  outline: 2px solid var(--interactive-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
