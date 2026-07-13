@@ -13,6 +13,12 @@ import { QuantityStepper } from './components/QuantityStepper';
 import { MenuItem } from './components/MenuItem';
 import { DropdownMenu, MenuDivider } from './components/DropdownMenu';
 import { ProgressStepper } from './components/ProgressStepper';
+import { ProductCard } from './components/ProductCard';
+import { ProductThumb } from './components/ProductThumb';
+import { ProductListRow } from './components/ProductListRow';
+import { ProductHeader } from './components/ProductHeader';
+import { LookPreview } from './components/LookPreview';
+import { SpecTable } from './components/SpecTable';
 import { SearchIcon, BellIcon } from './components/icons';
 
 const VARIANTS: ButtonVariant[] = ['primary', 'secondary', 'ghost', 'glass', 'primary-dark'];
@@ -158,6 +164,38 @@ export function App() {
             { state: 'done', label: 'Body shape estimated' },
             { state: 'active', label: 'Building 3D avatar…' },
             { state: 'pending', label: 'Final render' }
+          ]}
+        />
+      </Section>
+
+      <Section title="Product Card">
+        <ProductCard title="Knit sweater" price="21.00 €" />
+        <ProductCard title="Knit sweater" price="21.00 €" oldPrice="28.00 €" />
+        <ProductCard size="sm" title="Knit sweater" price="21.00 €" />
+      </Section>
+
+      <Section title="Product Thumb">
+        <ProductThumb title="Sweater" price="21.00 €" />
+        <ProductThumb title="Sweater" price="21.00 €" detected />
+        <ProductThumb title="Sweater" price="21.00 €" selected />
+      </Section>
+
+      <Section title="Product List Row & Header">
+        <ProductListRow title="Knit sweater" subtitle="Wool blend · size M" price="21.00 €" />
+        <ProductHeader name="Knit sweater" price="21.00 €" rating={4} reviews={128} />
+      </Section>
+
+      <Section title="Look Preview">
+        <LookPreview title="Summer · current" meta="3 items · 27.40 €" />
+      </Section>
+
+      <Section title="Spec Table">
+        <SpecTable
+          rows={[
+            { label: 'Material', value: '80% wool, 20% nylon' },
+            { label: 'Fit', value: 'Regular' },
+            { label: 'Care', value: 'Hand wash' },
+            { label: 'Origin', value: 'Portugal' }
           ]}
         />
       </Section>

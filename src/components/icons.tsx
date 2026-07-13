@@ -30,3 +30,9 @@ export const WarningIcon = (p: SVGProps<SVGSVGElement>) => (
 export const BellIcon = (p: SVGProps<SVGSVGElement>) => (
   <svg {...base(p)}><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6" /><path d="M10 20a2 2 0 0 0 4 0" /></svg>
 );
+export const StarIcon = (p: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" {...p}><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.2l5.9-.9z" /></svg>
+);
+export const ImageIcon = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)} strokeWidth={1.5}><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9.5" r="1.6" /><path d="M4 16l4.5-4.5 3.5 3.5 4-5 4 4.5" /></svg>
+);

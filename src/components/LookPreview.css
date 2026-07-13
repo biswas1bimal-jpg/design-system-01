@@ -1,0 +1,22 @@
+/* Look Preview — outfit card. Tokens only. */
+
+.ds-look {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 180px;
+}
+.ds-look__cover {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-lg);
+  background: var(--background-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.ds-look__cover img { width: 100%; height: 100%; object-fit: cover; }
+.ds-look__cover .ds-photo-ph { width: var(--icon-size-xl); height: var(--icon-size-xl); color: var(--text-secondary); }
+.ds-look__caption { display: flex; flex-direction: column; gap: var(--space-1); }
+.ds-look__title { color: var(--text-primary); }
+.ds-look__meta { color: var(--text-secondary); }
