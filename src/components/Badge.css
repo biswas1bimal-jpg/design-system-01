@@ -1,0 +1,26 @@
+/* Badge — status pill. `--tone` carries the status color; bg is a soft mix. */
+
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 15%, transparent);
+}
+.ds-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: currentColor;
+}
+.ds-badge--neutral { --tone: var(--status-neutral); }
+.ds-badge--info    { --tone: var(--status-info); }
+.ds-badge--success { --tone: var(--status-success); }
+.ds-badge--warning { --tone: var(--status-warning); }
+.ds-badge--error   { --tone: var(--status-error); }
