@@ -311,6 +311,7 @@
       <div class="eyebrow">Component &amp; Token Reference</div>
       <h1 class="title">Дизайн-система в коде: как ей пользоваться</h1>
       <p class="lede">Единый источник цветов, типографики, отступов и компонентов. Всё, что тут описано, живёт в токенах и синхронизировано с Figma — фронтенду не нужно подбирать hex, px или веса шрифтов вручную.</p>
+      <p style="margin:12px 0 0;font-size:13.5px;color:var(--muted)">Основы (цвета, типографика, отступы, радиусы) — это <b style="color:var(--ink)">точные значения токенов</b>. Превью компонентов ниже — <b style="color:var(--ink)">схематичные иллюстрации</b> на токенах; эталонный вид, размеры и все состояния смотрите в Figma.</p>
       <div class="stats">
         <div class="stat"><div class="n">30+</div><div class="l">Компонентов</div></div>
         <div class="stat"><div class="n">2</div><div class="l">Темы (light / dark)</div></div>
@@ -485,6 +486,9 @@ import { Typography } from <span style="color:var(--good)">"../build/ts/typograp
     <section id="actions">
       <div class="sec-head"><span class="num">07</span><h2>Действия</h2></div>
       <p class="sec-intro">Кнопки — единственные компоненты, уже реализованные в React (<code>src/components/</code>). Остальные пока живут в Figma как спецификация — собирай их по тем же токенам, следуя паттерну <code>Button.tsx</code>.</p>
+      <div class="callout" style="border-left-color:var(--warn)">
+        <b>Превью компонентов на этой странице — схематичные.</b> Они собраны вручную на токенах системы (цвета и типографика — настоящие), но это <b>не точный рендер</b> компонентов из Figma и не готовый код. Пропорции, скругления, тени и отдельные состояния могут отличаться. Эталон вида, размеров и всех состояний — <b>в Figma</b>; что реализовано в коде (<span class="status-tag react">React</span>), а что только в Figma (<span class="status-tag figma">Figma</span>) — показывают метки и «Полный каталог».
+      </div>
 
       <div class="comp-block">
         <h3 class="sub" style="margin-top:0">Button <span class="status-tag react">React</span></h3>
