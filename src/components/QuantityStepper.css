@@ -1,0 +1,38 @@
+/* Quantity Stepper — pill with round − / + controls. Tokens only. */
+
+.ds-qty {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  border: var(--weight-border-1) solid var(--border-default);
+  border-radius: var(--radius-full);
+  padding: var(--space-1) var(--space-3);
+  background: var(--background-primary);
+}
+.ds-qty__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.ds-qty__btn svg { width: var(--icon-size-md); height: var(--icon-size-md); }
+.ds-qty__btn:hover { background: var(--background-ghost-hover); }
+.ds-qty__btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.ds-qty__value {
+  min-width: var(--space-5);
+  text-align: center;
+  font-family: var(--font-family-base);
+  font-weight: 500;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-qty--md .ds-qty__btn { width: var(--space-8); height: var(--space-8); }
+.ds-qty--md .ds-qty__value { font-size: var(--font-size-md); }
+.ds-qty--sm .ds-qty__btn { width: var(--space-6); height: var(--space-6); }
+.ds-qty--sm .ds-qty__value { font-size: var(--font-size-sm); }
+.ds-qty--sm .ds-qty__btn svg { width: var(--icon-size-sm); height: var(--icon-size-sm); }

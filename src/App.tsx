@@ -7,7 +7,13 @@ import { Checkbox } from './components/Checkbox';
 import { Radio } from './components/Radio';
 import { Badge } from './components/Badge';
 import { Toast } from './components/Toast';
-import { SearchIcon } from './components/icons';
+import { Tabs } from './components/Tabs';
+import { Avatar } from './components/Avatar';
+import { QuantityStepper } from './components/QuantityStepper';
+import { MenuItem } from './components/MenuItem';
+import { DropdownMenu, MenuDivider } from './components/DropdownMenu';
+import { ProgressStepper } from './components/ProgressStepper';
+import { SearchIcon, BellIcon } from './components/icons';
 
 const VARIANTS: ButtonVariant[] = ['primary', 'secondary', 'ghost', 'glass', 'primary-dark'];
 
@@ -26,6 +32,8 @@ export function App() {
   const [dark, setDark] = useState(false);
   const [checked, setChecked] = useState(true);
   const [picked, setPicked] = useState('courier');
+  const [tab, setTab] = useState('details');
+  const [qty, setQty] = useState(2);
 
   const toggle = () => {
     const next = !dark;
@@ -107,6 +115,51 @@ export function App() {
         <Toast status="success" title="Successful toast" text="It's a green notification state" onDismiss={() => {}} />
         <Toast status="warning" title="Warning toast" text="It's an orange notification state" onDismiss={() => {}} />
         <Toast status="error" title="Error toast" text="It's a red notification state" onDismiss={() => {}} />
+      </Section>
+
+      <Section title="Tabs">
+        <Tabs
+          value={tab}
+          onChange={setTab}
+          tabs={[
+            { value: 'details', label: 'Details' },
+            { value: 'reviews', label: 'Reviews' },
+            { value: 'care', label: 'Care' }
+          ]}
+        />
+      </Section>
+
+      <Section title="Avatar">
+        <Avatar />
+        <Avatar initial="M" />
+        <Avatar initial="K" selected />
+      </Section>
+
+      <Section title="Quantity Stepper">
+        <QuantityStepper value={qty} onChange={setQty} min={0} max={9} />
+        <QuantityStepper value={qty} onChange={setQty} min={0} max={9} size="sm" />
+      </Section>
+
+      <Section title="Menu & Dropdown">
+        <DropdownMenu>
+          <MenuItem icon={<SearchIcon />} label="New look" />
+          <MenuItem icon={<BellIcon />} label="Save to pattern" />
+          <MenuDivider />
+          <MenuItem label="Delete look" />
+        </DropdownMenu>
+      </Section>
+
+      <Section title="Progress Stepper">
+        <ProgressStepper
+          title="Creating your avatar…"
+          progress={0.64}
+          steps={[
+            { state: 'done', label: 'Photos analysed' },
+            { state: 'done', label: 'Body shape estimated' },
+            { state: 'active', label: 'Building 3D avatar…' },
+            { state: 'pending', label: 'Final render' }
+          ]}
+        />
       </Section>
     </main>
   );

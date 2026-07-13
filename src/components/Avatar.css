@@ -1,0 +1,28 @@
+/* Avatar — round, empty / filled / selected. Tokens only. */
+
+.ds-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--background-secondary);
+  color: var(--text-secondary);
+  border: var(--weight-border-1) solid var(--border-default);
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  overflow: hidden;
+  flex: none;
+}
+.ds-avatar--filled {
+  background: var(--background-brand);
+  color: var(--text-on-brand);
+  border-color: transparent;
+}
+.ds-avatar--selected {
+  box-shadow: 0 0 0 var(--weight-border-2) var(--border-inverse), 0 0 0 4px var(--background-primary);
+}
+.ds-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
