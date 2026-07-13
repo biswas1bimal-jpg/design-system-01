@@ -8,13 +8,20 @@ plugin, or hand-edit the JSON to match Figma. Keep code and Figma in sync either
 
 ## Token architecture (2 tiers today)
 1. **Primitives** — raw values. Never reference these directly for color in a component.
-   - `tokens/primitives.json`: `color.*` (e.g. `color.neutral.0`, `color.blue.600`),
-     `space.*`, `radius.*`, `font.size.*`.
+   - `tokens/primitives.json`: `color.*` (e.g. `color.neutral.0`, `color.blue.600`,
+     status ramps `color.red/green/amber.500/600`, `color.border.*` overlay hairlines),
+     `space.*`, `radius.*`, `font.size.*`, `weight.*` (border widths).
    - `tokens/icon.json`: `icon.size.*` (sm/md/lg/xl).
-2. **Semantic** (`tokens/semantic.json`) — intent-based aliases that point at primitives:
-   `background.*` (primary/secondary/brand), `text.*` (primary/secondary/on-brand),
-   `border.*` (default), `interactive.*` (primary/hover). **Use these for color in components.**
-3. **Component tokens** — optional, add later under a `component.*` group if a component
+2. **Semantic** (`tokens/semantic.json`) — intent-based aliases that point at primitives.
+   **Use these for color in components.** Groups:
+   - `background.*` — primary/secondary/brand/brand-dark/brand-dark-hover/ghost-hover/inverse/glass
+   - `text.*` — primary/secondary/on-brand/inverse/placeholder/error
+   - `border.*` — default (a visible grey, `neutral.500` in light) / subtle / inverse / brand-dark
+   - `interactive.*` — primary/hover **+ success/warning/error (each with a `-hover`)**
+   - `status.*` — neutral/info/success/warning/error (for badges, toasts, inline status)
+3. **Typography** (`tokens/typography.json`) — the Geist text styles (mirror of Figma's
+   "Typography — Geist" local text styles). See the Typography section below.
+4. **Component tokens** — optional, add later under a `component.*` group if a component
    needs its own knobs (e.g. `component.button.bg`).
 
 ## Modes (light / dark)
@@ -27,13 +34,28 @@ plugin, or hand-edit the JSON to match Figma. Keep code and Figma in sync either
   second color for dark — add/adjust the token in Figma instead.
 
 ## Token names in code
-- **Colors (semantic):** `--background-primary`, `--background-secondary`, `--background-brand`,
-  `--text-primary`, `--text-secondary`, `--text-on-brand`, `--border-default`,
-  `--interactive-primary`, `--interactive-hover`.
-- **Sizes (primitives, used directly):** `--space-*`, `--radius-*`, `--font-size-*`, `--icon-size-*`
-  (these already include `px` in CSS, e.g. `--space-4: 16px`).
+- **Colors (semantic):** `--background-*` (primary/secondary/brand/brand-dark/brand-dark-hover/
+  ghost-hover/inverse/glass), `--text-*` (primary/secondary/on-brand/inverse/placeholder/error),
+  `--border-*` (default/subtle/inverse/brand-dark), `--interactive-*` (primary/hover and
+  success/warning/error each with `-hover`), `--status-*` (neutral/info/success/warning/error).
+- **Sizes (primitives, used directly):** `--space-*`, `--radius-*`, `--font-size-*`, `--icon-size-*`,
+  `--weight-border-*` (these already include `px` in CSS, e.g. `--space-4: 16px`).
 - **Color primitives** (`--color-*`) exist in `:root` but are for semantic tokens to reference —
   do not use them directly in a component.
+
+## Typography (Geist)
+- Source: Figma local text styles **"Typography — Geist"**, mirrored in `tokens/typography.json`.
+  Weights: Geist Regular 400 / Medium 500 / SemiBold 600 / Bold 700.
+- The build emits two artifacts (not through Style Dictionary — these are composite styles):
+  - `build/css/typography.css` — `--font-family-base` plus a utility class per style:
+    `.text-display`, `.text-heading-h1…h5`, `.text-body-large/default/small`,
+    `.text-label`, `.text-label-large`, `.text-label-xl`, `.text-caption`,
+    `.text-extra-small`, `.text-strong-sm/md/lg`.
+  - `build/ts/typography.ts` — a typed `Typography` map (PascalCase keys, e.g.
+    `Typography.HeadingH3`, `Typography.BodySmall`) usable as a React `style={...}`.
+- **Use a text style for every piece of text** — never hand-set font-size/weight ad hoc.
+  Import `build/css/typography.css` once at the app root (already done in `src/main.tsx`).
+  Add a new style to `tokens/typography.json` (and mirror it in Figma) if none fits.
 
 ## How to consume tokens in React
 - Import the CSS once at the app root:
@@ -55,7 +77,8 @@ plugin, or hand-edit the JSON to match Figma. Keep code and Figma in sync either
   Follow `src/components/Button.tsx` as the reference pattern.
 
 ## Build
-- `npm run build` regenerates `build/css/*` and `build/ts/*` from `tokens/`.
+- `npm run build` regenerates `build/css/*` and `build/ts/*` from `tokens/` — token CSS vars,
+  the TS token map, **and** `typography.css` / `typography.ts` (from `tokens/typography.json`).
 - CI (`.github/workflows/build-tokens.yml`) rebuilds and commits `build/` automatically on every
   push to `main` that touches `tokens/`, so `build/` is always current on the main branch.
 - Demo app: `npm run dev` (local) / `npm run build:app` (production build of `src/`).

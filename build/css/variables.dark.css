@@ -5,16 +5,33 @@
 [data-theme="dark"] {
   --background-brand-dark: rgba(0, 0, 0, 0);
   --background-brand-dark-hover: rgba(0, 0, 0, 0);
+  --background-glass: rgba(105, 105, 105, 0.5);
   --background-primary: var(--color-neutral-900);
   --background-secondary: var(--color-neutral-800);
   --background-brand: var(--color-blue-500);
   --background-ghost-hover: var(--color-neutral-800);
+  --background-inverse: var(--color-neutral-0);
   --text-primary: var(--color-neutral-50);
   --text-secondary: var(--color-neutral-400);
   --text-on-brand: var(--color-neutral-0);
+  --text-inverse: var(--color-neutral-900);
+  --text-placeholder: var(--color-neutral-400);
+  --text-error: var(--color-red-500);
   --border-default: var(--color-neutral-700);
+  --border-subtle: var(--color-border-dark-border);
   --border-inverse: var(--color-neutral-0);
   --border-brand-dark: var(--color-neutral-0);
   --interactive-primary: var(--color-blue-500);
   --interactive-hover: var(--color-blue-400);
+  --interactive-success: var(--color-green-500);
+  --interactive-success-hover: var(--color-green-500);
+  --interactive-warning: var(--color-amber-500);
+  --interactive-warning-hover: var(--color-amber-500);
+  --interactive-error: var(--color-red-500);
+  --interactive-error-hover: var(--color-red-500);
+  --status-neutral: var(--color-neutral-500);
+  --status-info: var(--color-blue-500);
+  --status-success: var(--color-green-500);
+  --status-warning: var(--color-amber-500);
+  --status-error: var(--color-red-500);
 }

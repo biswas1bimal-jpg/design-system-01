@@ -1,0 +1,107 @@
+/* AUTO-GENERATED from tokens/typography.json — do not edit by hand. */
+:root {
+  --font-family-base: Geist, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.text-display {
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.15;
+}
+.text-heading-h1 {
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 1.2;
+}
+.text-heading-h2 {
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.25;
+}
+.text-heading-h3 {
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.3;
+}
+.text-heading-h4 {
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.35;
+}
+.text-heading-h5 {
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.text-body-large {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+}
+.text-body-default {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.text-body-small {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.text-label {
+  font-family: var(--font-family-base);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.text-label-large {
+  font-family: var(--font-family-base);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.text-label-xl {
+  font-family: var(--font-family-base);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.4;
+}
+.text-caption {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.text-extra-small {
+  font-family: var(--font-family-base);
+  font-weight: 500;
+  font-size: 9px;
+  line-height: 1.4;
+}
+.text-strong-sm {
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.2;
+}
+.text-strong-md {
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+}
+.text-strong-lg {
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+}

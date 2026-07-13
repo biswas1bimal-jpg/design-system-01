@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 // variables.light.css defines :root; variables.dark.css defines [data-theme="dark"].
 import '../build/css/variables.light.css';
 import '../build/css/variables.dark.css';
+import '../build/css/typography.css';
 
 import { App } from './App';
 
