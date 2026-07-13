@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design System · Frontend Guide</title>
+<style>
+  /* ============================================================
+     TOKENS — mirror of tokens/semantic.json (light + dark).
+     The page styles everything through these; the theme toggle
+     stamps data-theme on <html> and wins over the media query.
+     ============================================================ */
+  :root {
+    /* neutrals with a cool bias, matching the Tailwind-slate-ish ramp */
+    --bg:        #ffffff;   /* background/primary  */
+    --bg-2:      #f9fafb;   /* background/secondary */
+    --card:      #ffffff;
+    --ink:       #111827;   /* text/primary   */
+    --muted:     #6b7280;   /* text/secondary */
+    --hairline:  rgba(17,24,39,.10);
+    --hairline-strong: rgba(17,24,39,.16);
+    --accent:    #2563eb;   /* interactive/primary */
+    --accent-h:  #1d4ed8;   /* interactive/hover   */
+    --on-accent: #ffffff;
+    --ink-strong:#000000;
+    --good:      #16a34a;
+    --warn:      #b45309;
+    --bad:       #dc2626;
+    --good-bg:   rgba(34,197,94,.14);
+    --warn-bg:   rgba(245,158,11,.16);
+    --bad-bg:    rgba(239,68,68,.14);
+    --info-bg:   rgba(37,99,235,.12);
+    --code-bg:   #f3f4f6;
+    --code-ink:  #1f2937;
+
+    --r-sm: 4px; --r-md: 8px; --r-lg: 12px; --r-xl: 16px; --r-2xl: 20px; --r-full: 9999px;
+    --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px; --s10:40px; --s12:48px; --s16:64px;
+
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --maxw: 1180px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#0f1420; --bg-2:#171e2e; --card:#1a2233; --ink:#f4f6fb; --muted:#9aa4b6;
+      --hairline:rgba(255,255,255,.10); --hairline-strong:rgba(255,255,255,.18);
+      --accent:#5b9bff; --accent-h:#82b4ff; --on-accent:#0b1220; --ink-strong:#ffffff;
+      --good:#4ade80; --warn:#fbbf24; --bad:#f87171;
+      --good-bg:rgba(34,197,94,.18); --warn-bg:rgba(245,158,11,.20); --bad-bg:rgba(239,68,68,.20); --info-bg:rgba(91,155,255,.18);
+      --code-bg:#0b111d; --code-ink:#d7deea;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#0f1420; --bg-2:#171e2e; --card:#1a2233; --ink:#f4f6fb; --muted:#9aa4b6;
+    --hairline:rgba(255,255,255,.10); --hairline-strong:rgba(255,255,255,.18);
+    --accent:#5b9bff; --accent-h:#82b4ff; --on-accent:#0b1220; --ink-strong:#ffffff;
+    --good:#4ade80; --warn:#fbbf24; --bad:#f87171;
+    --good-bg:rgba(34,197,94,.18); --warn-bg:rgba(245,158,11,.20); --bad-bg:rgba(239,68,68,.20); --info-bg:rgba(91,155,255,.18);
+    --code-bg:#0b111d; --code-ink:#d7deea;
+  }
+  :root[data-theme="light"] {
+    --bg:#ffffff; --bg-2:#f9fafb; --card:#ffffff; --ink:#111827; --muted:#6b7280;
+    --hairline:rgba(17,24,39,.10); --hairline-strong:rgba(17,24,39,.16);
+    --accent:#2563eb; --accent-h:#1d4ed8; --on-accent:#ffffff; --ink-strong:#000000;
+    --good:#16a34a; --warn:#b45309; --bad:#dc2626;
+    --good-bg:rgba(34,197,94,.14); --warn-bg:rgba(245,158,11,.16); --bad-bg:rgba(239,68,68,.14); --info-bg:rgba(37,99,235,.12);
+    --code-bg:#f3f4f6; --code-ink:#1f2937;
+  }
+
+  /* Forced-theme scopes so a preview can show light & dark side by side,
+     independent of the page theme. Values are literal token colors. */
+  .tl { --bg:#ffffff; --bg-2:#f9fafb; --card:#ffffff; --ink:#111827; --muted:#6b7280;
+        --hairline:rgba(17,24,39,.10); --accent:#2563eb; --accent-h:#1d4ed8; --on-accent:#fff; --ink-strong:#000;
+        --good:#16a34a; --warn:#b45309; --bad:#dc2626; --good-bg:rgba(34,197,94,.14); --warn-bg:rgba(245,158,11,.16); --bad-bg:rgba(239,68,68,.14); --info-bg:rgba(37,99,235,.12); }
+  .td { --bg:#0f1420; --bg-2:#171e2e; --card:#1a2233; --ink:#f4f6fb; --muted:#9aa4b6;
+        --hairline:rgba(255,255,255,.12); --accent:#5b9bff; --accent-h:#82b4ff; --on-accent:#0b1220; --ink-strong:#fff;
+        --good:#4ade80; --warn:#fbbf24; --bad:#f87171; --good-bg:rgba(34,197,94,.18); --warn-bg:rgba(245,158,11,.20); --bad-bg:rgba(239,68,68,.20); --info-bg:rgba(91,155,255,.18); }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, kbd { font-family: var(--mono); }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; gap: var(--s4);
+    padding: var(--s3) var(--s5);
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; }
+  .brand .dot { width: 20px; height: 20px; border-radius: 6px; background: var(--accent);
+    box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--on-accent) 55%, transparent); }
+  .topbar .spacer { flex: 1; }
+  .toggle {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    font: inherit; font-size: 13px; font-weight: 600; color: var(--ink);
+    background: var(--bg-2); border: 1px solid var(--hairline);
+    padding: 7px 12px; border-radius: var(--r-full);
+  }
+  .toggle:hover { border-color: var(--hairline-strong); }
+  .toggle svg { width: 15px; height: 15px; }
+
+  /* ---------- shell ---------- */
+  .shell { max-width: var(--maxw); margin: 0 auto; display: grid; grid-template-columns: 232px 1fr; gap: var(--s8); padding: var(--s8) var(--s5) 96px; }
+  nav.toc { position: sticky; top: 84px; align-self: start; font-size: 13.5px; max-height: calc(100vh - 100px); overflow: auto; }
+  nav.toc h4 { margin: var(--s5) 0 var(--s2); font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); font-weight: 700; }
+  nav.toc h4:first-child { margin-top: 0; }
+  nav.toc a { display: block; color: var(--muted); padding: 5px 0; border-left: 2px solid transparent; padding-left: 12px; margin-left: -14px; }
+  nav.toc a:hover { color: var(--ink); text-decoration: none; }
+  main { min-width: 0; }
+
+  /* ---------- hero ---------- */
+  .hero { padding-bottom: var(--s8); border-bottom: 1px solid var(--hairline); margin-bottom: var(--s8); }
+  .eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: .14em; color: var(--accent); font-weight: 700; }
+  h1.title { font-size: clamp(30px, 5vw, 46px); line-height: 1.05; letter-spacing: -.025em; margin: var(--s3) 0 var(--s3); text-wrap: balance; font-weight: 700; }
+  .lede { font-size: 18px; color: var(--muted); max-width: 62ch; margin: 0; }
+  .stats { display: flex; flex-wrap: wrap; gap: var(--s6); margin-top: var(--s6); }
+  .stat .n { font-size: 26px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .stat .l { font-size: 12.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+
+  /* ---------- sections ---------- */
+  section { scroll-margin-top: 84px; margin-bottom: var(--s16); }
+  .sec-head { display: flex; align-items: baseline; gap: var(--s3); margin-bottom: var(--s5); }
+  .sec-head h2 { font-size: 24px; letter-spacing: -.02em; margin: 0; font-weight: 700; }
+  .sec-head .num { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .sec-intro { color: var(--muted); max-width: 68ch; margin: -8px 0 var(--s6); }
+  h3.sub { font-size: 15px; letter-spacing: .01em; margin: var(--s8) 0 var(--s3); font-weight: 700; }
+  h3.sub:first-of-type { margin-top: 0; }
+
+  .panel { background: var(--card); border: 1px solid var(--hairline); border-radius: var(--r-xl); }
+  .card-grid { display: grid; gap: var(--s4); }
+
+  /* code */
+  pre { margin: var(--s3) 0 0; background: var(--code-bg); color: var(--code-ink); border: 1px solid var(--hairline);
+    border-radius: var(--r-lg); padding: var(--s4); overflow-x: auto; font-size: 13px; line-height: 1.6; }
+  pre code { color: inherit; }
+  .tok { color: var(--accent); }
+  p code, li code, td code { background: var(--code-bg); color: var(--code-ink); padding: 1px 6px; border-radius: 5px; font-size: .88em; border: 1px solid var(--hairline); }
+
+  /* tables */
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--hairline); border-radius: var(--r-lg); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+  th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; background: var(--bg-2); position: sticky; top: 0; }
+  tr:last-child td { border-bottom: 0; }
+  td code { white-space: nowrap; }
+
+  /* ---------- foundations: swatches ---------- */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: var(--s3); }
+  .sw { border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow: hidden; background: var(--card); }
+  .sw .chip { height: 60px; }
+  .sw .meta { padding: 10px 12px; }
+  .sw .meta .name { font-family: var(--mono); font-size: 12px; font-weight: 600; }
+  .sw .meta .val { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+  /* type scale */
+  .type-row { display: grid; grid-template-columns: 140px 1fr; gap: var(--s4); align-items: baseline; padding: var(--s3) 0; border-top: 1px solid var(--hairline); }
+  .type-row:first-child { border-top: 0; }
+  .type-row .m { font-family: var(--mono); font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .type-row .m b { color: var(--ink); display: block; font-weight: 600; }
+
+  /* spacing */
+  .space-row { display: flex; align-items: center; gap: var(--s4); padding: 6px 0; }
+  .space-row .bar { height: 14px; background: var(--accent); border-radius: 3px; }
+  .space-row .m { font-family: var(--mono); font-size: 12px; color: var(--muted); width: 190px; flex: none; }
+  .space-row .m b { color: var(--ink); }
+
+  .radii { display: flex; flex-wrap: wrap; gap: var(--s4); }
+  .radii .box { width: 88px; }
+  .radii .box .fill { height: 64px; background: color-mix(in srgb, var(--accent) 16%, var(--card)); border: 1px solid var(--accent); }
+  .radii .box .m { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+
+  .icons-scale { display: flex; align-items: flex-end; gap: var(--s5); }
+  .icons-scale .i { text-align: center; color: var(--muted); }
+  .icons-scale .i svg { color: var(--ink); display: block; margin: 0 auto 8px; }
+  .icons-scale .i .m { font-family: var(--mono); font-size: 11.5px; }
+
+  /* ---------- component demo blocks ---------- */
+  .demo { border: 1px solid var(--hairline); border-radius: var(--r-xl); overflow: hidden; margin-top: var(--s3); }
+  .demo .stage { display: grid; grid-template-columns: 1fr 1fr; }
+  .demo .stage > div { padding: var(--s6); display: flex; flex-wrap: wrap; gap: var(--s4); align-items: center; background: var(--bg); }
+  .demo .stage > .td { border-left: 1px solid var(--hairline); }
+  .demo .stage > div { background: var(--bg); }
+  .stage .lbl { position: absolute; }
+  .demo-tag { display:flex; gap:var(--s4); padding: 8px var(--s5); font-family: var(--mono); font-size: 11px; color: var(--muted); border-top: 1px solid var(--hairline); background: var(--bg-2); }
+  .demo-tag span::before { content:"◑ "; }
+  .comp-block { margin-bottom: var(--s8); }
+  .comp-block > p { color: var(--muted); margin: 4px 0 0; max-width: 70ch; }
+  .props { margin-top: var(--s3); }
+
+  /* ===== live component styles (built on the tokens above) ===== */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s2); border: 1px solid transparent;
+    border-radius: var(--r-2xl); font-family: var(--sans); font-weight: 500; font-size: 16px; line-height: 1; height: 40px; padding: 0 var(--s4);
+    cursor: pointer; white-space: nowrap; }
+  .btn svg { width: 20px; height: 20px; }
+  .btn.sm { height: 32px; font-size: 14px; padding: 0 var(--s3); gap: 6px; } .btn.sm svg{width:16px;height:16px;}
+  .btn.lg { height: 48px; font-size: 18px; padding: 0 var(--s5); gap: 10px; } .btn.lg svg{width:24px;height:24px;}
+  .btn.primary { background: var(--accent); color: var(--on-accent); }
+  .btn.primary:hover { background: var(--accent-h); }
+  .btn.secondary { background: transparent; color: var(--ink); border-color: var(--hairline-strong); }
+  .btn.ghost { background: transparent; color: var(--ink); }
+  .btn.ghost:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); }
+  .btn.dark { background: var(--ink-strong); color: #fff; }
+  .btn.success { background: var(--good); color: #fff; }
+  .btn.warning { background: var(--warn); color: #fff; }
+  .btn.error { background: var(--bad); color: #fff; }
+  .btn[disabled] { opacity: .4; cursor: not-allowed; }
+
+  .iconbtn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: var(--r-full);
+    border: 1px solid transparent; cursor: pointer; }
+  .iconbtn svg { width: 20px; height: 20px; }
+  .iconbtn.primary { background: var(--accent); color: var(--on-accent); }
+  .iconbtn.secondary { background: transparent; color: var(--ink); border-color: var(--hairline-strong); }
+  .iconbtn.dark { background: var(--ink-strong); color:#fff; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; width: 240px; }
+  .field label { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .field .inp { height: 44px; border-radius: var(--r-lg); border: 1px solid var(--hairline-strong); background: var(--card); color: var(--ink);
+    padding: 0 var(--s3); font: inherit; font-size: 15px; display: flex; align-items: center; }
+  .field .inp.ph { color: var(--muted); }
+  .field .inp:focus-within, .field .inp.focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+
+  .uicard { width: 280px; border: 1px solid var(--hairline); border-radius: var(--r-lg); background: var(--card); padding: var(--s5); }
+  .uicard h5 { margin: 0 0 6px; font-size: 20px; font-weight: 600; letter-spacing: -.01em; }
+  .uicard p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  .check { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; }
+  .box { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--hairline-strong); display: inline-flex; align-items: center; justify-content: center; }
+  .box.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .box.dark.on { background: var(--ink-strong); border-color: var(--ink-strong); color:#fff; }
+  .box svg { width: 12px; height: 12px; }
+  .radio { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--hairline-strong); display: inline-flex; align-items: center; justify-content: center; }
+  .radio.on { border-color: var(--ink-strong); border-width: 2px; }
+  .radio.on::after { content:""; width: 9px; height: 9px; border-radius: 50%; background: var(--ink-strong); }
+
+  .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; padding: 3px 10px; border-radius: var(--r-full); }
+  .badge::before { content:""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .badge.neutral { color: var(--muted); background: color-mix(in srgb, var(--muted) 15%, transparent); }
+  .badge.info { color: var(--accent); background: var(--info-bg); }
+  .badge.success { color: var(--good); background: var(--good-bg); }
+  .badge.warning { color: var(--warn); background: var(--warn-bg); }
+  .badge.error { color: var(--bad); background: var(--bad-bg); }
+
+  .toast { display: flex; align-items: flex-start; gap: var(--s3); width: 320px; padding: var(--s4); border-radius: var(--r-lg);
+    background: var(--card); border: 1px solid var(--hairline); box-shadow: 0 8px 24px rgba(0,0,0,.10); }
+  .toast .ic { width: 32px; height: 32px; border-radius: 50%; flex: none; display: inline-flex; align-items: center; justify-content: center; color:#fff; }
+  .toast .ic svg { width: 18px; height: 18px; }
+  .toast.success .ic { background: var(--good); } .toast.warning .ic { background: var(--warn); }
+  .toast.error .ic { background: var(--bad); } .toast.info .ic { background: var(--accent); } .toast.neutral .ic { background: var(--muted); }
+  .toast .tt { font-size: 14px; font-weight: 600; }
+  .toast .tx { font-size: 13px; color: var(--muted); }
+
+  .tabs { display: inline-flex; gap: var(--s5); border-bottom: 1px solid var(--hairline); }
+  .tabs .tab { padding: 10px 0; font-size: 16px; font-weight: 500; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; }
+  .tabs .tab.on { color: var(--ink); border-color: var(--ink-strong); }
+
+  .avatar { width: 56px; height: 56px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 22px;
+    background: var(--bg-2); color: var(--muted); border: 1px solid var(--hairline); }
+  .avatar.filled { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+  .avatar.sel { box-shadow: 0 0 0 2px var(--ink-strong), 0 0 0 4px var(--bg); }
+
+  .qty { display: inline-flex; align-items: center; gap: var(--s3); border: 1px solid var(--hairline-strong); border-radius: var(--r-full); padding: 6px var(--s3); }
+  .qty button { width: 28px; height: 28px; border-radius: 50%; border: 0; background: var(--bg-2); color: var(--ink); font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .qty .v { min-width: 20px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  .pstep { width: 100%; max-width: 320px; }
+  .pstep .track { height: 6px; border-radius: 999px; background: var(--bg-2); overflow: hidden; }
+  .pstep .track > i { display: block; height: 100%; width: 64%; background: var(--ink-strong); border-radius: 999px; }
+  .pstep ul { list-style: none; margin: var(--s4) 0 0; padding: 0; display: grid; gap: var(--s3); }
+  .pstep li { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+  .pstep .dot { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .pstep .dot.done { color: var(--ink); } .pstep .dot.done svg { width: 12px; height: 12px; }
+  .pstep .dot.now::after { content:""; width: 12px; height: 12px; border-radius: 50%; background: var(--ink-strong); }
+  .pstep .dot.next { border: 1.5px solid var(--hairline-strong); }
+  .pstep li.muted { color: var(--muted); }
+
+  .pill-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill { font-family: var(--mono); font-size: 12px; padding: 3px 9px; border-radius: var(--r-full); background: var(--bg-2); border: 1px solid var(--hairline); color: var(--ink); }
+
+  .status-tag { font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 2px 7px; border-radius: 5px; }
+  .status-tag.react { color: var(--good); background: var(--good-bg); }
+  .status-tag.figma { color: var(--accent); background: var(--info-bg); }
+
+  .callout { border: 1px solid var(--hairline); border-left: 3px solid var(--accent); background: var(--bg-2); border-radius: var(--r-md); padding: var(--s4) var(--s5); margin-top: var(--s4); }
+  .callout b { color: var(--ink); }
+  .foot { border-top: 1px solid var(--hairline); margin-top: var(--s12); padding-top: var(--s5); color: var(--muted); font-size: 13px; }
+
+  @media (max-width: 860px) {
+    .shell { grid-template-columns: 1fr; gap: var(--s5); }
+    nav.toc { display: none; }
+    .demo .stage { grid-template-columns: 1fr; }
+    .demo .stage > .td { border-left: 0; border-top: 1px solid var(--hairline); }
+    .type-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> Design System <span style="color:var(--muted);font-weight:500">· Frontend Guide</span></div>
+  <div class="spacer"></div>
+  <button class="toggle" id="themeBtn" aria-label="Переключить тему">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+    <span id="themeLbl">Тёмная тема</span>
+  </button>
+</header>
+
+<div class="shell">
+  <nav class="toc" aria-label="Оглавление">
+    <h4>Начало</h4>
+    <a href="#overview">Обзор</a>
+    <a href="#consume">Подключение токенов</a>
+    <h4>Основы</h4>
+    <a href="#color">Цвета</a>
+    <a href="#type">Типографика</a>
+    <a href="#spacing">Отступы</a>
+    <a href="#radius">Радиусы</a>
+    <a href="#icons">Иконки</a>
+    <h4>Компоненты</h4>
+    <a href="#actions">Действия</a>
+    <a href="#forms">Формы и ввод</a>
+    <a href="#nav">Навигация</a>
+    <a href="#feedback">Статус и обратная связь</a>
+    <a href="#content">Контент и коммерция</a>
+    <a href="#overlays">Оверлеи и поток заказа</a>
+    <a href="#catalog">Полный каталог</a>
+    <h4>Правила</h4>
+    <a href="#rules">Как не сломать систему</a>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <div class="eyebrow">Component &amp; Token Reference</div>
+      <h1 class="title">Дизайн-система в коде: как ей пользоваться</h1>
+      <p class="lede">Единый источник цветов, типографики, отступов и компонентов. Всё, что тут описано, живёт в токенах и синхронизировано с Figma — фронтенду не нужно подбирать hex, px или веса шрифтов вручную.</p>
+      <div class="stats">
+        <div class="stat"><div class="n">30+</div><div class="l">Компонентов</div></div>
+        <div class="stat"><div class="n">2</div><div class="l">Темы (light / dark)</div></div>
+        <div class="stat"><div class="n">17</div><div class="l">Текст-стилей Geist</div></div>
+        <div class="stat"><div class="n">1</div><div class="l">Источник правды — Figma</div></div>
+      </div>
+    </div>
+
+    <!-- ===================== OVERVIEW ===================== -->
+    <section id="overview">
+      <div class="sec-head"><span class="num">00</span><h2>Обзор</h2></div>
+      <p class="sec-intro">Система построена на трёх уровнях токенов. Правило простое: <b>цвет — только из семантических токенов</b>, размеры — из примитивов, текст — из стилей Geist. Тогда light/dark и общий визуальный язык получаются «бесплатно».</p>
+      <div class="card-grid" style="grid-template-columns: repeat(auto-fit,minmax(240px,1fr))">
+        <div class="panel" style="padding:var(--s5)">
+          <div class="eyebrow" style="color:var(--muted)">Уровень 1</div>
+          <h3 class="sub" style="margin:6px 0 4px">Примитивы</h3>
+          <p style="margin:0;color:var(--muted);font-size:14px">Сырые значения: <code>color.*</code>, <code>space.*</code>, <code>radius.*</code>, <code>font.size.*</code>. Напрямую в компонентах для цвета <b>не используются</b>.</p>
+        </div>
+        <div class="panel" style="padding:var(--s5)">
+          <div class="eyebrow" style="color:var(--muted)">Уровень 2</div>
+          <h3 class="sub" style="margin:6px 0 4px">Семантика</h3>
+          <p style="margin:0;color:var(--muted);font-size:14px">Смысловые алиасы: <code>background/*</code>, <code>text/*</code>, <code>border/*</code>, <code>interactive/*</code>, <code>status/*</code>. <b>Их и используем.</b></p>
+        </div>
+        <div class="panel" style="padding:var(--s5)">
+          <div class="eyebrow" style="color:var(--muted)">Уровень 3</div>
+          <h3 class="sub" style="margin:6px 0 4px">Типографика</h3>
+          <p style="margin:0;color:var(--muted);font-size:14px">Текст-стили Geist (<code>Display</code>, <code>Heading/*</code>, <code>Body/*</code>, <code>Label/*</code>, <code>Strong/*</code>). Один стиль на каждый кусок текста.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONSUME ===================== -->
+    <section id="consume">
+      <div class="sec-head"><span class="num">01</span><h2>Подключение токенов</h2></div>
+      <p class="sec-intro">Токены собираются из <code>tokens/</code> в CSS-переменные и типизированную TS-карту. Импортируешь один раз в корне приложения — дальше ссылаешься на переменные.</p>
+
+      <h3 class="sub">Один импорт в корне</h3>
+      <pre><code><span class="tok">// src/main.tsx</span>
+import <span style="color:var(--good)">"../build/css/variables.light.css"</span>;  <span class="tok">// :root — примитивы + светлая семантика</span>
+import <span style="color:var(--good)">"../build/css/variables.dark.css"</span>;   <span class="tok">// [data-theme="dark"] — тёмные оверрайды</span>
+import <span style="color:var(--good)">"../build/css/typography.css"</span>;       <span class="tok">// классы .text-* + --font-family-base</span></code></pre>
+
+      <h3 class="sub">Цвет и размеры — через CSS-переменные</h3>
+      <pre><code>.card {
+  background: <span class="tok">var(--background-secondary)</span>;
+  color:      <span class="tok">var(--text-primary)</span>;
+  border:     <span class="tok">1px solid var(--border-default)</span>;
+  border-radius: <span class="tok">var(--radius-lg)</span>;
+  padding:    <span class="tok">var(--space-4)</span>;      <span class="tok">/* 16px */</span>
+  gap:        <span class="tok">var(--space-2)</span>;      <span class="tok">/* 8px  */</span>
+}</code></pre>
+
+      <h3 class="sub">Текст — класс или типизированная карта</h3>
+      <pre><code><span class="tok">// вариант A — CSS-класс из typography.css</span>
+&lt;h3 className=<span style="color:var(--good)">"text-heading-h3"</span>&gt;Заголовок карточки&lt;/h3&gt;
+&lt;p  className=<span style="color:var(--good)">"text-body-small"</span>&gt;Подпись&lt;/p&gt;
+
+<span class="tok">// вариант B — типизированная карта для инлайновых стилей</span>
+import { Typography } from <span style="color:var(--good)">"../build/ts/typography"</span>;
+&lt;h3 style={Typography.<span class="tok">HeadingH3</span>}&gt;Заголовок&lt;/h3&gt;</code></pre>
+
+      <div class="callout">
+        <b>Тема переключается одним атрибутом.</b> Поставь <code>data-theme="dark"</code> на <code>&lt;html&gt;</code> — все цвета перевернутся сами, потому что имя переменной в обеих темах одинаковое. Второй цвет для тёмной темы вручную задавать нельзя.
+      </div>
+    </section>
+
+    <!-- ===================== COLOR ===================== -->
+    <section id="color">
+      <div class="sec-head"><span class="num">02</span><h2>Цвета</h2></div>
+      <p class="sec-intro">Используй <b>только семантические</b> переменные — они адаптируются к теме. Значения примитивов (<code>--color-*</code>) существуют, но в компонентах для цвета их брать нельзя. Ниже — значение в текущей теме страницы.</p>
+
+      <h3 class="sub">Background</h3>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:var(--background-primary)"></div><div class="meta"><div class="name">--background-primary</div><div class="val">neutral 0 / 900</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--background-secondary)"></div><div class="meta"><div class="name">--background-secondary</div><div class="val">neutral 50 / 800</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--background-brand)"></div><div class="meta"><div class="name">--background-brand</div><div class="val">blue 600 / 500</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--background-inverse)"></div><div class="meta"><div class="name">--background-inverse</div><div class="val">neutral 900 / 0</div></div></div>
+      </div>
+      <h3 class="sub">Text</h3>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:var(--text-primary)"></div><div class="meta"><div class="name">--text-primary</div><div class="val">neutral 900 / 50</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--text-secondary)"></div><div class="meta"><div class="name">--text-secondary</div><div class="val">neutral 500 / 400</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--text-placeholder)"></div><div class="meta"><div class="name">--text-placeholder</div><div class="val">neutral 400</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--text-error)"></div><div class="meta"><div class="name">--text-error</div><div class="val">red 500</div></div></div>
+      </div>
+      <h3 class="sub">Interactive &amp; border</h3>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:var(--interactive-primary)"></div><div class="meta"><div class="name">--interactive-primary</div><div class="val">blue 600 / 500</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--interactive-hover)"></div><div class="meta"><div class="name">--interactive-hover</div><div class="val">blue 700 / 400</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--border-default)"></div><div class="meta"><div class="name">--border-default</div><div class="val">neutral 500 / 700</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--border-inverse)"></div><div class="meta"><div class="name">--border-inverse</div><div class="val">neutral 1000 / 0</div></div></div>
+      </div>
+      <h3 class="sub">Status — для бейджей, тостов, инлайн-состояний</h3>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:var(--status-info)"></div><div class="meta"><div class="name">--status-info</div><div class="val">blue 500</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--status-success)"></div><div class="meta"><div class="name">--status-success · interactive-success</div><div class="val">green 500</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--status-warning)"></div><div class="meta"><div class="name">--status-warning · interactive-warning</div><div class="val">amber 500</div></div></div>
+        <div class="sw"><div class="chip" style="background:var(--status-error)"></div><div class="meta"><div class="name">--status-error · interactive-error</div><div class="val">red 500</div></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== TYPE ===================== -->
+    <section id="type">
+      <div class="sec-head"><span class="num">03</span><h2>Типографика — Geist</h2></div>
+      <p class="sec-intro">17 стилей, каждый — это класс <code>.text-*</code> или ключ <code>Typography.*</code>. Никаких «ручных» font-size/weight: подбираешь ближайший смысловой стиль. Ниже — живая шкала (веб-превью системным шрифтом; в проде — Geist).</p>
+      <div class="panel" style="padding:var(--s5) var(--s6)">
+        <div class="type-row"><div class="m"><b>Display</b>700 · 36 / 1.15</div><div style="font-weight:700;font-size:36px;line-height:1.15;letter-spacing:-.02em">Almost before we knew it</div></div>
+        <div class="type-row"><div class="m"><b>Heading/H1</b>600 · 30 / 1.2</div><div style="font-weight:600;font-size:30px;line-height:1.2;letter-spacing:-.02em">Создание вашего аватара</div></div>
+        <div class="type-row"><div class="m"><b>Heading/H2</b>600 · 24 / 1.25</div><div style="font-weight:600;font-size:24px;line-height:1.25;letter-spacing:-.01em">Секция настроек заказа</div></div>
+        <div class="type-row"><div class="m"><b>Heading/H3</b>600 · 20 / 1.3</div><div style="font-weight:600;font-size:20px;line-height:1.3">Заголовок карточки</div></div>
+        <div class="type-row"><div class="m"><b>Heading/H4</b>600 · 16 / 1.35</div><div style="font-weight:600;font-size:16px;line-height:1.35">Подзаголовок блока</div></div>
+        <div class="type-row"><div class="m"><b>Heading/H5</b>600 · 14 / 1.4</div><div style="font-weight:600;font-size:14px;line-height:1.4">Заголовок секции формы</div></div>
+        <div class="type-row"><div class="m"><b>Body/Large</b>400 · 18 / 1.5</div><div style="font-weight:400;font-size:18px;line-height:1.5">Основной текст, крупный вариант для лида.</div></div>
+        <div class="type-row"><div class="m"><b>Body/Default</b>400 · 16 / 1.5</div><div style="font-weight:400;font-size:16px;line-height:1.5">Базовый размер основного текста интерфейса.</div></div>
+        <div class="type-row"><div class="m"><b>Body/Small</b>400 · 14 / 1.5</div><div style="font-weight:400;font-size:14px;line-height:1.5">Вспомогательный текст, подписи под заголовками.</div></div>
+        <div class="type-row"><div class="m"><b>Label</b>500 · 14 / 1.4</div><div style="font-weight:500;font-size:14px;line-height:1.4">Метка поля · SM-кнопка</div></div>
+        <div class="type-row"><div class="m"><b>Label/Large</b>500 · 16 / 1.4</div><div style="font-weight:500;font-size:16px;line-height:1.4">MD-кнопка · таб · степпер</div></div>
+        <div class="type-row"><div class="m"><b>Label/XL</b>500 · 18 / 1.4</div><div style="font-weight:500;font-size:18px;line-height:1.4">LG-кнопка</div></div>
+        <div class="type-row"><div class="m"><b>Caption</b>400 · 12 / 1.4</div><div style="font-weight:400;font-size:12px;line-height:1.4">Мелкая подпись, метаданные, «3 items · 27.40 €»</div></div>
+        <div class="type-row"><div class="m"><b>Extra small</b>500 · 9 / 1.4</div><div style="font-weight:500;font-size:9px;line-height:1.4">ПОДПИСЬ ИКОНКИ НАВИГАЦИИ</div></div>
+        <div class="type-row"><div class="m"><b>Strong/SM · MD · LG</b>700 · 12/14/20</div><div style="display:flex;gap:16px;align-items:baseline"><span style="font-weight:700;font-size:12px">27.40&nbsp;€</span><span style="font-weight:700;font-size:14px">27.40&nbsp;€</span><span style="font-weight:700;font-size:20px">27.40&nbsp;€</span></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== SPACING ===================== -->
+    <section id="spacing">
+      <div class="sec-head"><span class="num">04</span><h2>Отступы</h2></div>
+      <p class="sec-intro">Шкала кратна 4. Любой <code>gap</code>/<code>padding</code> — только из неё (<code>var(--space-*)</code>). Значений «между» (6, 10, 14) в системе нет — округляй к ближайшему.</p>
+      <div class="panel" style="padding:var(--s5) var(--s6)">
+        <div class="space-row"><div class="m"><b>--space-1</b> 4px</div><div class="bar" style="width:4px"></div></div>
+        <div class="space-row"><div class="m"><b>--space-2</b> 8px</div><div class="bar" style="width:8px"></div></div>
+        <div class="space-row"><div class="m"><b>--space-3</b> 12px</div><div class="bar" style="width:12px"></div></div>
+        <div class="space-row"><div class="m"><b>--space-4</b> 16px</div><div class="bar" style="width:16px"></div></div>
+        <div class="space-row"><div class="m"><b>--space-5</b> 20px</div><div class="bar" style="width:20px"></div></div>
+        <div class="space-row"><div class="m"><b>--space-6</b> 24px</div><div class="bar" style="width:24px"></div></div>
+        <div class="space-row"><div class="m"><b>--space-8</b> 32px</div><div class="bar" style="width:32px"></div></div>
+        <div class="space-row"><div class="m"><b>--space-10</b> 40px</div><div class="bar" style="width:40px"></div></div>
+        <div class="space-row"><div class="m"><b>--space-12</b> 48px</div><div class="bar" style="width:48px"></div></div>
+        <div class="space-row"><div class="m"><b>--space-16</b> 64px</div><div class="bar" style="width:64px"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== RADIUS ===================== -->
+    <section id="radius">
+      <div class="sec-head"><span class="num">05</span><h2>Радиусы</h2></div>
+      <p class="sec-intro">Кнопки — <code>--radius-2xl</code> (20px, почти пилюля). Карточки — <code>--radius-lg</code>. Полностью круглое (аватар, чип) — <code>--radius-full</code>.</p>
+      <div class="radii">
+        <div class="box"><div class="fill" style="border-radius:var(--r-sm)"></div><div class="m">sm · 4</div></div>
+        <div class="box"><div class="fill" style="border-radius:var(--r-md)"></div><div class="m">md · 8</div></div>
+        <div class="box"><div class="fill" style="border-radius:var(--r-lg)"></div><div class="m">lg · 12</div></div>
+        <div class="box"><div class="fill" style="border-radius:var(--r-xl)"></div><div class="m">xl · 16</div></div>
+        <div class="box"><div class="fill" style="border-radius:var(--r-2xl)"></div><div class="m">2xl · 20</div></div>
+        <div class="box"><div class="fill" style="border-radius:var(--r-full)"></div><div class="m">full · 9999</div></div>
+      </div>
+    </section>
+
+    <!-- ===================== ICONS ===================== -->
+    <section id="icons">
+      <div class="sec-head"><span class="num">06</span><h2>Иконки</h2></div>
+      <p class="sec-intro">Библиотека штриховых иконок (~450). Размер — из <code>--icon-size-*</code>. Иконки наследуют цвет через <code>currentColor</code>, поэтому внутри кнопки автоматически совпадают с текстом.</p>
+      <div class="panel" style="padding:var(--s6)">
+        <div class="icons-scale">
+          <div class="i"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg><div class="m">sm · 16</div></div>
+          <div class="i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg><div class="m">md · 20</div></div>
+          <div class="i"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg><div class="m">lg · 24</div></div>
+          <div class="i"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg><div class="m">xl · 32</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ACTIONS ===================== -->
+    <section id="actions">
+      <div class="sec-head"><span class="num">07</span><h2>Действия</h2></div>
+      <p class="sec-intro">Кнопки — единственные компоненты, уже реализованные в React (<code>src/components/</code>). Остальные пока живут в Figma как спецификация — собирай их по тем же токенам, следуя паттерну <code>Button.tsx</code>.</p>
+
+      <div class="comp-block">
+        <h3 class="sub" style="margin-top:0">Button <span class="status-tag react">React</span></h3>
+        <p>Варианты: <code>primary · secondary · ghost · glass · primary-dark</code> и статусные <code>success · warning · error</code>. Размеры <code>sm · md · lg</code>, флаг <code>fullWidth</code>, слоты <code>leadingIcon</code>/<code>trailingIcon</code>.</p>
+        <div class="demo">
+          <div class="stage">
+            <div class="tl">
+              <button class="btn primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>Primary</button>
+              <button class="btn secondary">Secondary</button>
+              <button class="btn ghost">Ghost</button>
+              <button class="btn dark">Dark</button>
+              <button class="btn success">Success</button>
+              <button class="btn error">Error</button>
+            </div>
+            <div class="td">
+              <button class="btn primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>Primary</button>
+              <button class="btn secondary">Secondary</button>
+              <button class="btn ghost">Ghost</button>
+              <button class="btn dark">Dark</button>
+              <button class="btn warning">Warning</button>
+              <button class="btn" disabled style="background:var(--accent);color:var(--on-accent)">Disabled</button>
+            </div>
+          </div>
+          <div class="demo-tag"><span>Light</span><span>Dark</span></div>
+        </div>
+        <pre class="props"><code>&lt;Button variant=<span style="color:var(--good)">"primary"</span> size=<span style="color:var(--good)">"md"</span> leadingIcon={&lt;SearchIcon/&gt;}&gt;Купить&lt;/Button&gt;
+&lt;Button variant=<span style="color:var(--good)">"secondary"</span> fullWidth&gt;Отмена&lt;/Button&gt;
+&lt;Button variant=<span style="color:var(--good)">"error"</span> size=<span style="color:var(--good)">"sm"</span>&gt;Удалить&lt;/Button&gt;</code></pre>
+      </div>
+
+      <div class="comp-block">
+        <h3 class="sub">IconButton <span class="status-tag react">React</span></h3>
+        <p>Квадратная кнопка только с иконкой. Те же варианты и размеры, обязателен <code>aria-label</code>.</p>
+        <div class="demo"><div class="stage">
+          <div class="tl">
+            <button class="iconbtn primary" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button>
+            <button class="iconbtn secondary" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button>
+            <button class="iconbtn dark" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button>
+          </div>
+          <div class="td">
+            <button class="iconbtn primary" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button>
+            <button class="iconbtn secondary" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button>
+            <button class="iconbtn dark" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button>
+          </div>
+        </div><div class="demo-tag"><span>Light</span><span>Dark</span></div></div>
+      </div>
+
+      <div class="comp-block">
+        <h3 class="sub">Boolean Button <span class="status-tag figma">Figma</span></h3>
+        <p>Кнопка-переключатель (вкл/выкл), для выбора карточек/опций. В состоянии <code>On</code> — тёмный фон на светлой теме и наоборот.</p>
+      </div>
+    </section>
+
+    <!-- ===================== FORMS ===================== -->
+    <section id="forms">
+      <div class="sec-head"><span class="num">08</span><h2>Формы и ввод</h2></div>
+
+      <div class="comp-block">
+        <h3 class="sub" style="margin-top:0">Input <span class="status-tag figma">Figma</span></h3>
+        <p>Размеры <code>SM · MD · LG · XL</code>, опциональные <code>label</code> и иконки, состояния default / focus / error / disabled. Плейсхолдер — <code>--text-placeholder</code>, фокус-кольцо — <code>--interactive-primary</code>.</p>
+        <div class="demo"><div class="stage">
+          <div class="tl">
+            <div class="field"><label>E-mail</label><div class="inp">you@studio.com</div></div>
+            <div class="field"><label>Поиск</label><div class="inp focus ph">Начните вводить…</div></div>
+          </div>
+          <div class="td">
+            <div class="field"><label>E-mail</label><div class="inp">you@studio.com</div></div>
+            <div class="field"><label>Поиск</label><div class="inp focus ph">Начните вводить…</div></div>
+          </div>
+        </div><div class="demo-tag"><span>Light</span><span>Dark</span></div></div>
+      </div>
+
+      <div class="comp-block">
+        <h3 class="sub">Checkbox &amp; Radio <span class="status-tag figma">Figma</span></h3>
+        <p>Checkbox — голубая и чёрная версии, состояния off / on / disabled. Radio — <code>Selected</code> (кольцо <code>border/inverse</code> + точка) и <code>Unselected</code>. Radio вынесен в отдельный переиспользуемый компонент.</p>
+        <div class="demo"><div class="stage">
+          <div class="tl">
+            <span class="check"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 6"/></svg></span> Синий</span>
+            <span class="check"><span class="box dark on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 6"/></svg></span> Чёрный</span>
+            <span class="check"><span class="box"></span> Off</span>
+            <span class="check"><span class="radio on"></span> Selected</span>
+            <span class="check"><span class="radio"></span> Unselected</span>
+          </div>
+          <div class="td">
+            <span class="check"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 6"/></svg></span> Синий</span>
+            <span class="check"><span class="box dark on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 6"/></svg></span> Чёрный</span>
+            <span class="check"><span class="box"></span> Off</span>
+            <span class="check"><span class="radio on"></span> Selected</span>
+            <span class="check"><span class="radio"></span> Unselected</span>
+          </div>
+        </div><div class="demo-tag"><span>Light</span><span>Dark</span></div></div>
+      </div>
+
+      <div class="comp-block">
+        <h3 class="sub">Quantity Stepper <span class="status-tag figma">Figma</span></h3>
+        <p>Выбор количества: <code>−</code> / значение / <code>+</code>. Размеры SM и MD.</p>
+        <div class="demo"><div class="stage">
+          <div class="tl"><div class="qty"><button>−</button><span class="v">2</span><button>+</button></div></div>
+          <div class="td"><div class="qty"><button>−</button><span class="v">2</span><button>+</button></div></div>
+        </div><div class="demo-tag"><span>Light</span><span>Dark</span></div></div>
+      </div>
+
+      <div class="comp-block">
+        <h3 class="sub">Color Selector · Color Swatch · Upload Area <span class="status-tag figma">Figma</span></h3>
+        <p><b>Color Swatch</b> — круглый образец цвета с состоянием «выбран». <b>Color Selector</b> — ряд свотчей с подписью. <b>Upload Area</b> — зона загрузки фото: при наведении фон затемняется, после заполнения — картинка на весь размер с кнопкой удаления.</p>
+      </div>
+    </section>
+
+    <!-- ===================== NAV ===================== -->
+    <section id="nav">
+      <div class="sec-head"><span class="num">09</span><h2>Навигация</h2></div>
+
+      <div class="comp-block">
+        <h3 class="sub" style="margin-top:0">Tabs <span class="status-tag figma">Figma</span></h3>
+        <p>Активная вкладка подчёркнута <code>border/inverse</code>, неактивные — <code>text/secondary</code>.</p>
+        <div class="demo"><div class="stage">
+          <div class="tl"><div class="tabs"><span class="tab on">Details</span><span class="tab">Reviews</span><span class="tab">Care</span></div></div>
+          <div class="td"><div class="tabs"><span class="tab on">Details</span><span class="tab">Reviews</span><span class="tab">Care</span></div></div>
+        </div><div class="demo-tag"><span>Light</span><span>Dark</span></div></div>
+      </div>
+
+      <div class="comp-block">
+        <h3 class="sub">Sidebar · Nav Bar · Nav Item · Menu Item · Dropdown Menu <span class="status-tag figma">Figma</span></h3>
+        <p><b>Sidebar</b> — плавающий glass-рейл с эффектом frosted glass и опциональным счётчиком на средней кнопке. <b>Nav Bar / Nav Item</b> — мобильная нижняя навигация (иконка + подпись Extra small). <b>Menu Item</b> — строка меню (иконка + лейбл, состояния default/hover). <b>Dropdown Menu</b> — контейнер из Menu Item с разделителями.</p>
+        <div class="demo"><div class="stage">
+          <div class="tl" style="gap:var(--s2);flex-direction:column;align-items:stretch;max-width:260px">
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--ink) 7%,transparent)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg> New look</div>
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;color:var(--muted)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 8h14l-1 12H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg> Save to pattern</div>
+          </div>
+          <div class="td" style="gap:var(--s2);flex-direction:column;align-items:stretch;max-width:260px">
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--ink) 10%,transparent)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg> New look</div>
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;color:var(--muted)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 8h14l-1 12H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg> Save to pattern</div>
+          </div>
+        </div><div class="demo-tag"><span>Light</span><span>Dark</span></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== FEEDBACK ===================== -->
+    <section id="feedback">
+      <div class="sec-head"><span class="num">10</span><h2>Статус и обратная связь</h2></div>
+
+      <div class="comp-block">
+        <h3 class="sub" style="margin-top:0">Status badges <span class="status-tag figma">Figma</span></h3>
+        <p>Инлайн-статусы на токенах <code>status/*</code>. Мягкий фон + насыщенный текст.</p>
+        <div class="demo"><div class="stage">
+          <div class="tl"><span class="badge neutral">Neutral</span><span class="badge info">Info</span><span class="badge success">Success</span><span class="badge warning">Warning</span><span class="badge error">Error</span></div>
+          <div class="td"><span class="badge neutral">Neutral</span><span class="badge info">Info</span><span class="badge success">Success</span><span class="badge warning">Warning</span><span class="badge error">Error</span></div>
+        </div><div class="demo-tag"><span>Light</span><span>Dark</span></div></div>
+      </div>
+
+      <div class="comp-block">
+        <h3 class="sub">Toast <span class="status-tag figma">Figma</span></h3>
+        <p>Уведомление: цветной кружок-иконка статуса + заголовок (Heading/H5) + текст (Body/Small) + закрытие. Пять типов: neutral / info / success / warning / error.</p>
+        <div class="demo"><div class="stage">
+          <div class="tl" style="flex-direction:column;align-items:stretch">
+            <div class="toast success"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 6"/></svg></div><div><div class="tt">Successful toast</div><div class="tx">It's a green notification state</div></div></div>
+            <div class="toast error"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div><div><div class="tt">Error toast</div><div class="tx">It's a red notification state</div></div></div>
+          </div>
+          <div class="td" style="flex-direction:column;align-items:stretch">
+            <div class="toast success"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 6"/></svg></div><div><div class="tt">Successful toast</div><div class="tx">It's a green notification state</div></div></div>
+            <div class="toast warning"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 8v5M12 16.5v.5"/><path d="M12 3l9 16H3z"/></svg></div><div><div class="tt">Warning toast</div><div class="tx">It's an orange notification state</div></div></div>
+          </div>
+        </div><div class="demo-tag"><span>Light</span><span>Dark</span></div></div>
+      </div>
+
+      <div class="comp-block">
+        <h3 class="sub">Progress Stepper &amp; Step <span class="status-tag figma">Figma</span></h3>
+        <p>Индикатор этапов: полоса прогресса + список шагов (Done — галочка, Active — точка, Pending — пустое кольцо). <code>Step</code> — переиспользуемый под-компонент трёх состояний.</p>
+        <div class="demo"><div class="stage">
+          <div class="tl"><div class="pstep"><div class="track"><i></i></div><ul>
+            <li class="muted"><span class="dot done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 6"/></svg></span> Photos analysed</li>
+            <li><span class="dot now"></span> Building 3D avatar…</li>
+            <li class="muted"><span class="dot next"></span> Final render</li>
+          </ul></div></div>
+          <div class="td"><div class="pstep"><div class="track"><i></i></div><ul>
+            <li class="muted"><span class="dot done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 6"/></svg></span> Photos analysed</li>
+            <li><span class="dot now"></span> Building 3D avatar…</li>
+            <li class="muted"><span class="dot next"></span> Final render</li>
+          </ul></div></div>
+        </div><div class="demo-tag"><span>Light</span><span>Dark</span></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTENT ===================== -->
+    <section id="content">
+      <div class="sec-head"><span class="num">11</span><h2>Контент и коммерция</h2></div>
+
+      <div class="comp-block">
+        <h3 class="sub" style="margin-top:0">Card <span class="status-tag figma">Figma</span></h3>
+        <p>Базовый контейнер: заголовок <code>Heading/H3</code> + текст <code>Body/Small</code>, рамка <code>border/default</code>, радиус <code>lg</code>.</p>
+        <div class="demo"><div class="stage">
+          <div class="tl"><div class="uicard"><h5>Card title</h5><p>Supporting text that describes the card content in a sentence or two.</p></div></div>
+          <div class="td"><div class="uicard"><h5>Card title</h5><p>Supporting text that describes the card content in a sentence or two.</p></div></div>
+        </div><div class="demo-tag"><span>Light</span><span>Dark</span></div></div>
+      </div>
+
+      <div class="comp-block">
+        <h3 class="sub">Avatar <span class="status-tag figma">Figma</span></h3>
+        <p>Три состояния: пустой, заполненный, выбранный (чёрная обводка <code>border/inverse</code>).</p>
+        <div class="demo"><div class="stage">
+          <div class="tl"><span class="avatar">A</span><span class="avatar filled">M</span><span class="avatar filled sel">K</span></div>
+          <div class="td"><span class="avatar">A</span><span class="avatar filled">M</span><span class="avatar filled sel">K</span></div>
+        </div><div class="demo-tag"><span>Light</span><span>Dark</span></div></div>
+      </div>
+
+      <div class="comp-block">
+        <h3 class="sub">Product Card · Thumb · List Row · Header · Look Preview · Spec Table <span class="status-tag figma">Figma</span></h3>
+        <p>Коммерческий набор. <b>Product Card</b> (Small/Medium, флаг Sale со старой ценой), <b>Product Thumb</b> (состояния selected/detected), <b>Product List Row</b>, <b>Product Header</b> (имя + цена + рейтинг), <b>Look Preview</b> (карточка образа: обложка + подпись), <b>Spec Table/Row</b> (характеристики). Цены — стиль <code>Strong/*</code>.</p>
+      </div>
+    </section>
+
+    <!-- ===================== OVERLAYS ===================== -->
+    <section id="overlays">
+      <div class="sec-head"><span class="num">12</span><h2>Оверлеи и поток заказа</h2></div>
+      <div class="comp-block">
+        <h3 class="sub" style="margin-top:0">Sheet · Suggestion Sheet <span class="status-tag figma">Figma</span></h3>
+        <p><b>Sheet</b> — нижняя шторка iPhone-стиля с детентами Medium/Large, сюда кладётся любой контент. <b>Suggestion Sheet</b> — шторка с подсказками/карточками товаров.</p>
+      </div>
+      <div class="comp-block">
+        <h3 class="sub">Order Item Card · Order Option Row · Order Section <span class="status-tag figma">Figma</span></h3>
+        <p>Экран оформления заказа. <b>Order Option Row</b> — строка с Radio (способ доставки/оплаты). <b>Order Section</b> — карточки Address / Delivery / Payment / Summary с заголовком и опциями. <b>Order Item Card</b> — товар в заказе.</p>
+      </div>
+    </section>
+
+    <!-- ===================== CATALOG ===================== -->
+    <section id="catalog">
+      <div class="sec-head"><span class="num">13</span><h2>Полный каталог</h2></div>
+      <p class="sec-intro">Все компоненты системы и их статус в коде. <span class="status-tag react">React</span> — готовый компонент в <code>src/components/</code>. <span class="status-tag figma">Figma</span> — спецификация в Figma, собирается фронтендом по токенам.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Компонент</th><th>Назначение</th><th>Варианты / ключевые свойства</th><th>Статус</th></tr></thead>
+          <tbody>
+            <tr><td><code>Button</code></td><td>Основное действие</td><td>variant×size×state×width, слоты иконок</td><td><span class="status-tag react">React</span></td></tr>
+            <tr><td><code>IconButton</code></td><td>Действие одной иконкой</td><td>variant×size, aria-label</td><td><span class="status-tag react">React</span></td></tr>
+            <tr><td><code>Boolean Button</code></td><td>Кнопка-переключатель</td><td>On / Off</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Input</code></td><td>Текстовое поле</td><td>SM·MD·LG·XL, label, иконки, error</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Checkbox</code></td><td>Множественный выбор</td><td>blue / black, off·on·disabled</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Radio</code></td><td>Единичный выбор</td><td>Selected / Unselected</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Quantity Stepper</code></td><td>Выбор количества</td><td>− / value / +, SM·MD</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Color Swatch</code> · <code>Color Selector</code></td><td>Выбор цвета</td><td>образец + состояние выбран</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Upload Area</code></td><td>Загрузка фото</td><td>empty·hover·filled + удаление</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Tab</code></td><td>Переключение разделов</td><td>active / inactive</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Sidebar</code></td><td>Плавающий glass-рейл</td><td>3 кнопки, Counter (bool), frosted glass</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Nav Bar</code> · <code>Nav Item</code></td><td>Мобильная навигация</td><td>иконка + подпись, active</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Menu Item</code> · <code>Dropdown Menu</code></td><td>Меню действий</td><td>default·hover, разделители</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Toast</code></td><td>Всплывающее уведомление</td><td>neutral·info·success·warning·error</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Progress Stepper</code> · <code>Step</code></td><td>Прогресс по этапам</td><td>done·active·pending</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Card</code></td><td>Базовый контейнер</td><td>title + body</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Avatar</code></td><td>Аватар пользователя</td><td>empty·filled·selected</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Product Card</code></td><td>Карточка товара</td><td>Small·Medium, Sale</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Product Thumb</code></td><td>Миниатюра товара</td><td>selected / detected</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Product List Row</code></td><td>Товар строкой</td><td>title + price</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Product Header</code></td><td>Шапка товара</td><td>имя + цена + рейтинг</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Look Preview</code></td><td>Карточка образа</td><td>обложка + подпись</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Spec Table</code> · <code>Spec Row</code></td><td>Характеристики</td><td>ключ / значение</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Sheet</code></td><td>Нижняя шторка</td><td>детенты Medium / Large</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Suggestion Sheet</code></td><td>Шторка с подсказками</td><td>detected / selected</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Order Section</code></td><td>Секции оформления</td><td>Address·Delivery·Payment·Summary</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Order Option Row</code></td><td>Опция заказа с Radio</td><td>selected / unselected</td><td><span class="status-tag figma">Figma</span></td></tr>
+            <tr><td><code>Order Item Card</code></td><td>Товар в заказе</td><td>фото + инфо + цена</td><td><span class="status-tag figma">Figma</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== RULES ===================== -->
+    <section id="rules">
+      <div class="sec-head"><span class="num">14</span><h2>Как не сломать систему</h2></div>
+      <div class="card-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+        <div class="panel" style="padding:var(--s5)"><h3 class="sub" style="margin:0 0 6px">✓ Цвет — только семантика</h3><p style="margin:0;color:var(--muted);font-size:14px"><code>var(--background-*)</code>, <code>--text-*</code>, <code>--border-*</code>, <code>--interactive-*</code>, <code>--status-*</code>. Никаких hex и <code>--color-*</code> примитивов в компоненте.</p></div>
+        <div class="panel" style="padding:var(--s5)"><h3 class="sub" style="margin:0 0 6px">✓ Размеры — только шкала</h3><p style="margin:0;color:var(--muted);font-size:14px"><code>--space-*</code>, <code>--radius-*</code>, <code>--font-size-*</code>, <code>--icon-size-*</code>. Значение «между» не изобретаем — округляем к ближайшему.</p></div>
+        <div class="panel" style="padding:var(--s5)"><h3 class="sub" style="margin:0 0 6px">✓ Текст — только стиль Geist</h3><p style="margin:0;color:var(--muted);font-size:14px">Класс <code>.text-*</code> или <code>Typography.*</code>. Не задаём font-size/weight руками.</p></div>
+        <div class="panel" style="padding:var(--s5)"><h3 class="sub" style="margin:0 0 6px">✓ Light &amp; dark — бесплатно</h3><p style="margin:0;color:var(--muted);font-size:14px">Компонент обязан работать в обеих темах без единой лишней строки — за это отвечают токены.</p></div>
+        <div class="panel" style="padding:var(--s5)"><h3 class="sub" style="margin:0 0 6px">✓ Нет токена — добавь его</h3><p style="margin:0;color:var(--muted);font-size:14px">Не хватает значения — добавь в <code>tokens/</code> и отзеркаль в Figma. Сырой литерал допустим лишь для нетокенизируемого (например прозрачность стекла).</p></div>
+        <div class="panel" style="padding:var(--s5)"><h3 class="sub" style="margin:0 0 6px">✓ Новый компонент — по паттерну</h3><p style="margin:0;color:var(--muted);font-size:14px">Один файл в <code>src/components/</code>, типизированные пропсы, именованный экспорт. Ориентир — <code>Button.tsx</code>.</p></div>
+      </div>
+      <div class="foot">Источник правды — Figma. Токены и текст-стили синхронизированы в <code>tokens/</code> и собираются в <code>build/</code>. Эта страница — снимок системы для фронтенд-команды.</div>
+    </section>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var btn = document.getElementById('themeBtn');
+    var lbl = document.getElementById('themeLbl');
+    function current() {
+      var attr = document.documentElement.getAttribute('data-theme');
+      if (attr) return attr;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function sync() { lbl.textContent = current() === 'dark' ? 'Светлая тема' : 'Тёмная тема'; }
+    btn.addEventListener('click', function () {
+      var next = current() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      sync();
+    });
+    sync();
+  })();
+</script>
+</body>
+</html>
